@@ -1,0 +1,1 @@
+create database "go-microservice-boilerplate-api";
