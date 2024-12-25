@@ -5,12 +5,12 @@ import (
 )
 
 type DogEntity struct {
-	*utils_entity.Entity `bson:",inline"`
-	Name                 string `bson:"name"`
+	utils_entity.Entity `bson:",inline"`
+	Name                string `bson:"name"`
 }
 
-func (d *DogEntity) Build(name string) DogEntity {
-	d.Name = name
-	d.Entity = &utils_entity.Entity{}
-	return *d
+func (entity *DogEntity) Build(name string) *DogEntity {
+	entity.Name = name
+	entity.Entity = utils_entity.Entity{}
+	return entity
 }

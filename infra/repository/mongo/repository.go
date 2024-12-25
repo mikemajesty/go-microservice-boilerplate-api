@@ -30,12 +30,12 @@ func (a *adapter[T]) Create(entity T) (string, error) {
 }
 
 func (a *adapter[T]) FindOne(input *infra_repository.FindOneInput) (T, error) {
-	var entity T
+	var entity = new(T)
 	var err = MongoRepository.DB().Database("go-microservice-boilerplate-api").Collection("dog").FindOne(context.Background(), input.MongoFilter).Decode(&entity)
 	if err != nil {
-		return entity, fmt.Errorf("failed to find one: %s", err.Error())
+		return *entity, fmt.Errorf("failed to find one: %s", err.Error())
 	}
-	return entity, nil
+	return *entity, nil
 }
 
 func CreateMongoRepository[T utils_entity.IEntity]() infra_repository.IRepository[T] {

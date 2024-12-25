@@ -22,15 +22,13 @@ var SecretService = secret.Adapter(secret.CreateSecret())
 var PostgresService = infra_database.Adapter[*gorm.DB](infra_database_postgres.CreateConnectPostgres())
 var MongoService = infra_database.Adapter[*mongo.Client](infra_database_mongo.CreateConnectMongo())
 
-var MongoRepository = infra_repository.Adapter[core_dog_entity.DogEntity](infra_mongo_repository.CreateMongoRepository[core_dog_entity.DogEntity]())
+var MongoRepository = infra_repository.Adapter[*core_dog_entity.DogEntity](infra_mongo_repository.CreateMongoRepository[*core_dog_entity.DogEntity]())
 
 func init() {
 	SecretService.InitEnvs()
 	PostgresService.Connect()
 	MongoService.Connect()
 
-	var entity = core_dog_entity.DogEntity{}
-	MongoRepository.Create(entity.Build("Hiquinho"))
 	var filter = infra_repository.FindOneInput{}
 	result, err := MongoRepository.FindOne(filter.SetMongoFilter(&bson.D{{Key: "name", Value: "Hiquinho"}}))
 
