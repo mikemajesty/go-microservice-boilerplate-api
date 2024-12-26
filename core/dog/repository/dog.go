@@ -8,5 +8,5 @@ import (
 )
 
 type IDogRepository interface {
-	Base() infra_repository.IRepository[*core_dog_entity.DogEntity, *primitive.ObjectID]
+	Base() infra_repository.IRepository[*core_dog_entity.DogEntity, primitive.ObjectID]
 }

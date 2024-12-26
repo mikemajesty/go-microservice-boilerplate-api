@@ -14,7 +14,7 @@ type IEntity interface {
 }
 
 type IEntityID interface {
-	~*primitive.ObjectID | uint | string
+	primitive.ObjectID | uint | string
 }
 
 type Entity[T IEntityID] struct {

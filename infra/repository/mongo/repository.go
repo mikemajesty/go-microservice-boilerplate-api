@@ -32,7 +32,7 @@ func (a *adapter[T]) Create(entity T, table string) (string, error) {
 	return result.InsertedID.(primitive.ObjectID).Hex(), nil
 }
 
-func (a *adapter[T]) FindByID(input *infra_repository.FindOneInput[*primitive.ObjectID], table string) (T, error) {
+func (a *adapter[T]) FindByID(input *infra_repository.FindOneInput[primitive.ObjectID], table string) (T, error) {
 	var databse = SecretService.GetSecret("MONGO_INITDB_DATABASE")
 	var entity = new(T)
 	var err = MongoDatabase.DB().Database(databse).Collection(table).FindOne(context.Background(), input.MongoFilter).Decode(&entity)
@@ -47,9 +47,9 @@ func (a *adapter[T]) Update(entity T, table string) (string, error) {
 	entity.SetUpdatedAt()
 	_, err := MongoDatabase.DB().Database(databse).Collection(table).UpdateOne(context.Background(), bson.M{"_id": entity.GetID()}, bson.M{"$set": entity})
 	if err != nil {
-		return entity.GetID().(*primitive.ObjectID).Hex(), fmt.Errorf("failed to update: %s", err.Error())
+		return entity.GetID().(primitive.ObjectID).Hex(), fmt.Errorf("failed to update: %s", err.Error())
 	}
-	return entity.GetID().(*primitive.ObjectID).Hex(), nil
+	return entity.GetID().(primitive.ObjectID).Hex(), nil
 }
 
 func (a *adapter[T]) Delete(entity T, table string) error {
@@ -81,6 +81,6 @@ func (a *adapter[T]) List(table string) ([]T, error) {
 	return entities, nil
 }
 
-func CreateMongoRepository[T utils_entity.IEntity]() infra_repository.IRepository[T, *primitive.ObjectID] {
+func CreateMongoRepository[T utils_entity.IEntity]() infra_repository.IRepository[T, primitive.ObjectID] {
 	return &adapter[T]{}
 }
