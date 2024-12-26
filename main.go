@@ -2,18 +2,21 @@ package main
 
 import (
 	"fmt"
+	core_cat_entity "go-microservice-boilerplate-api/core/cat/entity"
 	core_dog_entity "go-microservice-boilerplate-api/core/dog/entity"
 	infra_database "go-microservice-boilerplate-api/infra/database"
 	infra_database_mongo "go-microservice-boilerplate-api/infra/database/mongo"
 	infra_database_postgres "go-microservice-boilerplate-api/infra/database/postgres"
 	infra_repository "go-microservice-boilerplate-api/infra/repository"
 	infra_mongo_repository "go-microservice-boilerplate-api/infra/repository/mongo"
+	infra_postgres_repository "go-microservice-boilerplate-api/infra/repository/postgres"
 	"go-microservice-boilerplate-api/infra/secret"
+	utils_entity "go-microservice-boilerplate-api/utils"
 	"log"
 	"os"
 
 	"github.com/gofiber/fiber"
-	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"gorm.io/gorm"
 )
@@ -22,17 +25,19 @@ var SecretService = secret.Adapter(secret.CreateSecret())
 var PostgresService = infra_database.Adapter[*gorm.DB](infra_database_postgres.CreateConnectPostgres())
 var MongoService = infra_database.Adapter[*mongo.Client](infra_database_mongo.CreateConnectMongo())
 
-var MongoRepository = infra_repository.Adapter[*core_dog_entity.DogEntity](infra_mongo_repository.CreateMongoRepository[*core_dog_entity.DogEntity]())
+var MongoRepository = infra_repository.Adapter[*core_dog_entity.DogEntity, *primitive.ObjectID](infra_mongo_repository.CreateMongoRepository[*core_dog_entity.DogEntity]())
+var PostgresRepository = infra_repository.Adapter[*core_cat_entity.CatEntity, string](infra_postgres_repository.CreatePostgresRepository[*core_cat_entity.CatEntity]())
 
 func init() {
 	SecretService.InitEnvs()
 	PostgresService.Connect()
 	MongoService.Connect()
 
-	var filter = infra_repository.FindOneInput{}
-	result, err := MongoRepository.FindOne(filter.SetMongoFilter(&bson.D{{Key: "name", Value: "Hiquinho"}}))
+	var filter = infra_repository.FindOneInput[string]{}
 
-	fmt.Println(result, err)
+	result, err := PostgresRepository.FindOne(filter.SetPostgresFilter(&utils_entity.Entity[string]{ID: "676c8e26b2fcc097c9897776"}))
+
+	fmt.Println(result.Name, "err", err)
 }
 
 func main() {

@@ -18,14 +18,10 @@ func CreateConnectPostgres() infra_database.Adapter[*gorm.DB] {
 	return &adapter{}
 }
 
+var db *gorm.DB
+
 func (adapter *adapter) DB() *gorm.DB {
-	con, err := adapter.Connect()
-
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	return con
+	return db
 }
 
 func (adapter *adapter) Connect() (*gorm.DB, error) {
@@ -41,6 +37,7 @@ func (adapter *adapter) Connect() (*gorm.DB, error) {
 	if err != nil {
 		return nil, errors.New("failed to connect to Postgres")
 	}
+	db = con
 
 	fmt.Println("Successfully connected to Postgres")
 	return con, nil
