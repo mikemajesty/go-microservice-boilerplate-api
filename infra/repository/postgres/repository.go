@@ -42,9 +42,27 @@ func (a *adapter[T]) Update(entity T, table string) (string, error) {
 	entity.SetUpdatedAt()
 	result := PostgresDatabase.DB().Table(table).Save(&entity)
 	if result.Error != nil {
-		return entity.GetID().(string), result.Error
+		return entity.GetID().(string), fmt.Errorf("failed to update: %s", result.Error)
 	}
 	return entity.GetID().(string), nil
+}
+
+func (a *adapter[T]) Delete(entity T, table string) error {
+	fmt.Println(entity.GetID())
+	result := PostgresDatabase.DB().Table(table).Delete(&entity)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
+func (a *adapter[T]) List(table string) ([]T, error) {
+	var entities []T
+	result := PostgresDatabase.DB().Table(table).Find(&entities)
+	if result.Error != nil {
+		return nil, fmt.Errorf("failed to list: %s", result.Error)
+	}
+	return entities, nil
 }
 
 func CreatePostgresRepository[T utils_entity.IEntity]() infra_repository.IRepository[T, string] {

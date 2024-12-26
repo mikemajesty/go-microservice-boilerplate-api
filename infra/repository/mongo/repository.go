@@ -51,6 +51,35 @@ func (a *adapter[T]) Update(entity T, table string) (string, error) {
 	return entity.GetID().(*primitive.ObjectID).Hex(), nil
 }
 
+func (a *adapter[T]) Delete(entity T, table string) error {
+	var databse = SecretService.GetSecret("MONGO_INITDB_DATABASE")
+	objectId, _ := primitive.ObjectIDFromHex(entity.GetID().(string))
+	_, err := MongoDatabase.DB().Database(databse).Collection(table).DeleteOne(context.Background(), bson.M{"_id": objectId})
+	if err != nil {
+		return fmt.Errorf("failed to delete: %s", err.Error())
+	}
+	return nil
+}
+
+func (a *adapter[T]) List(table string) ([]T, error) {
+	var databse = SecretService.GetSecret("MONGO_INITDB_DATABASE")
+	var entities []T
+	cursor, err := MongoDatabase.DB().Database(databse).Collection(table).Find(context.Background(), bson.M{})
+	if err != nil {
+		return entities, fmt.Errorf("failed to list: %s", err.Error())
+	}
+	defer cursor.Close(context.Background())
+	for cursor.Next(context.Background()) {
+		var entity T
+		err := cursor.Decode(&entity)
+		if err != nil {
+			return entities, fmt.Errorf("failed to list: %s", err.Error())
+		}
+		entities = append(entities, entity)
+	}
+	return entities, nil
+}
+
 func CreateMongoRepository[T utils_entity.IEntity]() infra_repository.IRepository[T, *primitive.ObjectID] {
 	return &adapter[T]{}
 }

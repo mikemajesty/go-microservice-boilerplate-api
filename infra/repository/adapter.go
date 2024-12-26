@@ -29,4 +29,6 @@ type IRepository[T utils_entity.IEntity, P utils_entity.IEntityID] interface {
 	Create(entity T, table string) (string, error)
 	FindByID(input *FindOneInput[P], table string) (T, error)
 	Update(entity T, table string) (string, error)
+	Delete(entity T, table string) error
+	List(table string) ([]T, error)
 }
