@@ -11,7 +11,6 @@ import (
 	infra_mongo_repository "go-microservice-boilerplate-api/infra/repository/mongo"
 	infra_postgres_repository "go-microservice-boilerplate-api/infra/repository/postgres"
 	"go-microservice-boilerplate-api/infra/secret"
-	utils_entity "go-microservice-boilerplate-api/utils"
 	"log"
 	"os"
 
@@ -33,11 +32,16 @@ func init() {
 	PostgresService.Connect()
 	MongoService.Connect()
 
-	var filter = infra_repository.FindOneInput[string]{}
+	// var filter = infra_repository.FindOneInput[string]{}
 
-	result, err := PostgresRepository.FindOne(filter.SetPostgresFilter(&utils_entity.Entity[string]{ID: "676c8e26b2fcc097c9897776"}))
+	// result, err := PostgresRepository.FindByID(filter.CreatePostgresFilter(&utils_entity.Entity[string]{ID: "676c8e26b2fcc097c9897776"}), "cats")
 
-	fmt.Println(result.Name, "err", err)
+	// objectID, _ := primitive.ObjectIDFromHex("676c5eabcec5a5a7eddd8f59")
+
+	// var filter = infra_repository.FindOneInput[*primitive.ObjectID]{}
+
+	// var result, err = MongoRepository.FindByID(filter.CreateMongoFilter(&bson.D{{Key: "_id", Value: objectID}}), "dog")
+
 }
 
 func main() {
