@@ -21,9 +21,10 @@ type adapter[T utils_entity.IEntity] struct{}
 
 func (a *adapter[T]) Create(entity T, table string) (string, error) {
 	var databse = SecretService.GetSecret("MONGO_INITDB_DATABASE")
-	entity.SetID(primitive.NewObjectID())
+	var id = primitive.NewObjectID()
 	entity.SetCreatedAt()
 	entity.SetUpdatedAt()
+	entity.SetID(id)
 	result, err := MongoDatabase.DB().Database(databse).Collection(table).InsertOne(context.Background(), entity)
 	if err != nil {
 		return "", fmt.Errorf("failed to create: %s", err.Error())

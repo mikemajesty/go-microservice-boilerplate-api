@@ -7,6 +7,6 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-type DogRepository interface {
-	infra_repository.IRepository[*core_dog_entity.DogEntity, *primitive.ObjectID]
+type IDogRepository interface {
+	Base() infra_repository.IRepository[*core_dog_entity.DogEntity, *primitive.ObjectID]
 }

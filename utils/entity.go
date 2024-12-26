@@ -1,4 +1,4 @@
-package utils_entity
+package utils
 
 import (
 	"time"
