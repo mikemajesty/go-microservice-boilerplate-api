@@ -8,5 +8,6 @@ import (
 
 func CreateCatRoutes() *gin.Engine {
 	utils.Route.POST("/cats", CreateCat)
+	utils.Route.DELETE("/cats/:id", DeleteCat)
 	return utils.Route
 }

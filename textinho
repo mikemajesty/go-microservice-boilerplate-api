@@ -1,0 +1,13 @@
+Fala pessoal, esses dias eu comecei a aprender Golang(venho do Nodejs), e para aprender eu resolvi 
+criar um boilerplate usando as melhores praticas de mercado de arquitetura de software(apanhei e to apanhando).
+Mas ta saindo um inicio de um projeto. O Desafio ta sendo deixar o core desacoplado e a comunicação entre camadas
+somente por adapter, deixando assim o core desacoplado de framework e infra.
+
+Como eu sou novo em Go, tenho muita coisa a aprender e aceito críticas e sugestões, eu tenho um
+boilerplate em node(Nestjs) que teve uma recepção muito boa na comunidade, to usando a mesma arquitetura aqui.
+Ta ficando legal.
+
+Mesmo sem saber as boas praticas e convenções eu decidi iniciar, por isso fiquem a vontade para dar suas opiniões
+
+boilerplate em node que estou usando como referência: https://github.com/mikemajesty/go-microservice-boilerplate-api
+boilerplate em go(em andamento): https://github.com/mikemajesty/go-microservice-boilerplate-api

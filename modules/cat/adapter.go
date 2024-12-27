@@ -17,3 +17,13 @@ func CatCreate() core_usecase_cat.CatCreateAdapter {
 func (c *createAdatper) CatCreateExecute(cat *core_cat_entity.CatEntity) (string, error) {
 	return core_usecase_cat.CatCreateUsecase(catRepository)(cat)
 }
+
+type deleteAdatper struct{}
+
+func (d *deleteAdatper) CatDeleteExecute(input string) error {
+	return core_usecase_cat.CatDeleteUsecase(catRepository)(input)
+}
+
+func CatDelete() core_usecase_cat.CatDeleteAdapter {
+	return &deleteAdatper{}
+}
