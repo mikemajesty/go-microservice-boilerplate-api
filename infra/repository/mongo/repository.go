@@ -54,8 +54,7 @@ func (a *adapter[T]) Update(entity T, table string) (string, error) {
 
 func (a *adapter[T]) Delete(entity T, table string) error {
 	var databse = SecretService.GetSecret("MONGO_INITDB_DATABASE")
-	objectId, _ := primitive.ObjectIDFromHex(entity.GetID().(string))
-	_, err := MongoDatabase.DB().Database(databse).Collection(table).DeleteOne(context.Background(), bson.M{"_id": objectId})
+	_, err := MongoDatabase.DB().Database(databse).Collection(table).DeleteOne(context.Background(), bson.M{"_id": entity.GetID()})
 	if err != nil {
 		return fmt.Errorf("failed to delete: %s", err.Error())
 	}
