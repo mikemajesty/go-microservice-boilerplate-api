@@ -1,6 +1,7 @@
 package cache
 
 import (
+	"fmt"
 	cacheAdapter "go-microservice-boilerplate-api/infra/cache"
 
 	"github.com/patrickmn/go-cache"
@@ -15,9 +16,10 @@ func (a adapter) Cache() *cache.Cache {
 }
 
 func (a adapter) Connect() (*cache.Cache, error) {
+	fmt.Println("Successfully connected to Cache Memory")
 	return _cache, nil
 }
 
-func CreateRedis() cacheAdapter.CacheAdapter[*cache.Cache] {
+func CreateMemory() cacheAdapter.CacheAdapter[*cache.Cache] {
 	return adapter{}
 }

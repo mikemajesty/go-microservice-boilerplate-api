@@ -42,6 +42,6 @@ func (a adapter) Connect() (*redis.Client, error) {
 
 	_cache = client
 
-	fmt.Println("Successfully connected to Redis")
+	fmt.Println("Successfully connected to Cache Redis")
 	return client, nil
 }
