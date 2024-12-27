@@ -17,7 +17,7 @@ import (
 var MongoDatabase = infra_database.Adapter[*mongo.Client](infra_database_mongo.CreateConnectMongo())
 var SecretService = secret.Adapter(secret.CreateSecret())
 
-type adapter[T utils_entity.IEntity] struct{}
+type adapter[T utils_entity.EntityAdapter] struct{}
 
 func (a *adapter[T]) Create(entity T, table string) (string, error) {
 	var databse = SecretService.GetSecret("MONGO_INITDB_DATABASE")
@@ -81,6 +81,6 @@ func (a *adapter[T]) List(table string) ([]T, error) {
 	return entities, nil
 }
 
-func CreateMongoRepository[T utils_entity.IEntity]() infra_repository.IRepository[T, primitive.ObjectID] {
+func CreateMongoRepository[T utils_entity.EntityAdapter]() infra_repository.IRepository[T, primitive.ObjectID] {
 	return &adapter[T]{}
 }

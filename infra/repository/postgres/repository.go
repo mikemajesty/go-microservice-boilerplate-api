@@ -13,7 +13,7 @@ import (
 
 var PostgresDatabase = infra_database.Adapter[*gorm.DB](infra_database_postgres.CreateConnectPostgres())
 
-type adapter[T utils_entity.IEntity] struct{}
+type adapter[T utils_entity.EntityAdapter] struct{}
 
 func (a *adapter[T]) Create(entity T, table string) (string, error) {
 	entity.SetID(primitive.NewObjectID().Hex())
@@ -65,6 +65,6 @@ func (a *adapter[T]) List(table string) ([]T, error) {
 	return entities, nil
 }
 
-func CreatePostgresRepository[T utils_entity.IEntity]() infra_repository.IRepository[T, string] {
+func CreatePostgresRepository[T utils_entity.EntityAdapter]() infra_repository.IRepository[T, string] {
 	return &adapter[T]{}
 }

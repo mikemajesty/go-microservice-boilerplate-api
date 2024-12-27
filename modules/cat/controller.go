@@ -6,12 +6,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var catRepository = CreateCatRepository()
-
 func CreateCat(controller *gin.Context) {
 	var entity = core_cat_entity.CatEntity{}
 	controller.Bind(&entity)
-	result, err := catRepository.Base().Create(&entity, "cats")
+
+	result, err := CatCreate().CatCreateExecute(&entity)
 
 	if err != nil {
 		controller.JSON(500, err.Error())

@@ -1,4 +1,4 @@
-package core_dog_entity
+package core_dog
 
 import (
 	utils_entity "go-microservice-boilerplate-api/utils"

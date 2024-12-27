@@ -6,11 +6,11 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-type Adapter[T utils_entity.IEntity, P utils_entity.IEntityID] interface {
+type Adapter[T utils_entity.EntityAdapter, P utils_entity.EntityIDAdapter] interface {
 	IRepository[T, P]
 }
 
-type FindOneInput[T utils_entity.IEntityID] struct {
+type FindOneInput[T utils_entity.EntityIDAdapter] struct {
 	MongoFilter    *bson.D
 	PostgresFilter *utils_entity.Entity[T]
 }
@@ -25,7 +25,7 @@ func (f FindOneInput[T]) CreatePostgresFilter(filter *utils_entity.Entity[T]) *F
 	return &f
 }
 
-type IRepository[T utils_entity.IEntity, P utils_entity.IEntityID] interface {
+type IRepository[T utils_entity.EntityAdapter, P utils_entity.EntityIDAdapter] interface {
 	Create(entity T, table string) (string, error)
 	FindByID(input *FindOneInput[P], table string) (T, error)
 	Update(entity T, table string) (string, error)

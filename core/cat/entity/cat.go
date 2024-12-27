@@ -1,4 +1,4 @@
-package core_cat_entity
+package core_cat
 
 import (
 	utils_entity "go-microservice-boilerplate-api/utils"

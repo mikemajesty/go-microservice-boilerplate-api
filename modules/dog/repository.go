@@ -13,7 +13,7 @@ var DogRepository = infra_repository.Adapter[*core_dog_entity.DogEntity, primiti
 
 type repository struct{}
 
-func CreateDogRepository() core_dog_repository.IDogRepository {
+func CreateDogRepository() core_dog_repository.DogRepositoryAdapter {
 	return &repository{}
 }
 

@@ -6,18 +6,18 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-type IEntity interface {
+type EntityAdapter interface {
 	GetID() any
 	SetID(id any)
 	SetCreatedAt()
 	SetUpdatedAt()
 }
 
-type IEntityID interface {
+type EntityIDAdapter interface {
 	primitive.ObjectID | uint | string
 }
 
-type Entity[T IEntityID] struct {
+type Entity[T EntityIDAdapter] struct {
 	ID        T         `bson:"_id" json:"id" gorm:"primarykey"`
 	CreatedAt time.Time `bson:"created_at" json:"created_at"`
 	UpdatedAt time.Time `bson:"updated_at" json:"updated_at"`
