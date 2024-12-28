@@ -5,10 +5,12 @@ import (
 	core_cat_entity "go-microservice-boilerplate-api/core/cat/entity"
 	core_cat_repository "go-microservice-boilerplate-api/core/cat/repository"
 	core_usecase_cat "go-microservice-boilerplate-api/core/cat/use-case"
+	infra "go-microservice-boilerplate-api/infra/logger"
 	"go-microservice-boilerplate-api/utils"
 )
 
 var catRepository core_cat_repository.CatRepositoryAdapter = CreateCatRepository()
+var loggerService infra.LoggerAdapter = infra.LoggerAdapter(infra.CreateLogger())
 
 type createAdatper struct{}
 
@@ -17,7 +19,7 @@ func CatCreate() core_usecase_cat.CatCreateAdapter {
 }
 
 func (c *createAdatper) CatCreateExecute(cat *core_cat_entity.CatEntity) (utils.Nullable[string], *utils.AppException) {
-	return core_usecase_cat.CatCreateUsecase(catRepository)(cat)
+	return core_usecase_cat.CatCreateUsecase(catRepository, loggerService)(cat)
 }
 
 type deleteAdatper struct{}
