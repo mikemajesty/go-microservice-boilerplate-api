@@ -7,10 +7,6 @@ type AppException struct {
 	Message error
 }
 
-type apiException interface {
-	*AppException | interface{}
-}
-
 func (e *AppException) GetMessage() string {
 	return e.Message.Error()
 }
