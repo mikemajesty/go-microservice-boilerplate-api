@@ -7,14 +7,14 @@ import (
 )
 
 type CatCreateAdapter interface {
-	CatCreateExecute(cat *core_cat_entity.CatEntity) (string, *utils.AppException)
+	CatCreateExecute(cat *core_cat_entity.CatEntity) (utils.Nullable[string], *utils.AppException)
 }
 
-func CatCreateUsecase(repository core_cat_repository.CatRepositoryAdapter) func(input *core_cat_entity.CatEntity) (string, *utils.AppException) {
-	return func(input *core_cat_entity.CatEntity) (string, *utils.AppException) {
+func CatCreateUsecase(repository core_cat_repository.CatRepositoryAdapter) func(input *core_cat_entity.CatEntity) (utils.Nullable[string], *utils.AppException) {
+	return func(input *core_cat_entity.CatEntity) (utils.Nullable[string], *utils.AppException) {
 		catEntity, err := repository.Base().Create(input, "cats")
 		if err != nil {
-			return "", err
+			return nil, err
 		}
 		return catEntity, nil
 	}

@@ -16,7 +16,7 @@ func CatCreate() core_usecase_cat.CatCreateAdapter {
 	return &createAdatper{}
 }
 
-func (c *createAdatper) CatCreateExecute(cat *core_cat_entity.CatEntity) (string, *utils.AppException) {
+func (c *createAdatper) CatCreateExecute(cat *core_cat_entity.CatEntity) (utils.Nullable[string], *utils.AppException) {
 	return core_usecase_cat.CatCreateUsecase(catRepository)(cat)
 }
 

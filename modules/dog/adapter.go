@@ -15,7 +15,7 @@ func DogCreate() core_dog_usecase.DogCreateAdapter {
 	return &createAdatper{}
 }
 
-func (c *createAdatper) DogCreateExecute(dog *core_dog_entity.DogEntity) (string, *utils.AppException) {
+func (c *createAdatper) DogCreateExecute(dog *core_dog_entity.DogEntity) (utils.Nullable[string], *utils.AppException) {
 	return core_dog_usecase.DogCreateUsecase(dogRepository)(dog)
 }
 
