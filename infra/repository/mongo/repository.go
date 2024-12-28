@@ -18,7 +18,7 @@ var SecretService = secret.SecretAdapter(secret.CreateSecret())
 
 type adapter[T utils.EntityAdapter] struct{}
 
-func (a *adapter[T]) Create(entity T, table string) (string, utils.ApiException) {
+func (a *adapter[T]) Create(entity T, table string) (string, *utils.AppException) {
 	var databse = SecretService.GetSecret("MONGO_INITDB_DATABASE")
 	var id = primitive.NewObjectID()
 	entity.SetCreatedAt()
@@ -31,7 +31,7 @@ func (a *adapter[T]) Create(entity T, table string) (string, utils.ApiException)
 	return result.InsertedID.(primitive.ObjectID).Hex(), nil
 }
 
-func (a *adapter[T]) FindByID(input *infra_repository.FindOneInput[primitive.ObjectID], table string) (T, utils.ApiException) {
+func (a *adapter[T]) FindByID(input *infra_repository.FindOneInput[primitive.ObjectID], table string) (T, *utils.AppException) {
 	var databse = SecretService.GetSecret("MONGO_INITDB_DATABASE")
 	var entity = new(T)
 	var err = MongoDatabase.DB().Database(databse).Collection(table).FindOne(context.Background(), input.MongoFilter).Decode(&entity)
@@ -41,7 +41,7 @@ func (a *adapter[T]) FindByID(input *infra_repository.FindOneInput[primitive.Obj
 	return *entity, nil
 }
 
-func (a *adapter[T]) Update(entity T, table string) (string, utils.ApiException) {
+func (a *adapter[T]) Update(entity T, table string) (string, *utils.AppException) {
 	var databse = SecretService.GetSecret("MONGO_INITDB_DATABASE")
 	entity.SetUpdatedAt()
 	_, err := MongoDatabase.DB().Database(databse).Collection(table).UpdateOne(context.Background(), bson.M{"_id": entity.GetID()}, bson.M{"$set": entity})
@@ -51,7 +51,7 @@ func (a *adapter[T]) Update(entity T, table string) (string, utils.ApiException)
 	return entity.GetID().(primitive.ObjectID).Hex(), nil
 }
 
-func (a *adapter[T]) Delete(entity T, table string) utils.ApiException {
+func (a *adapter[T]) Delete(entity T, table string) *utils.AppException {
 	var databse = SecretService.GetSecret("MONGO_INITDB_DATABASE")
 	_, err := MongoDatabase.DB().Database(databse).Collection(table).DeleteOne(context.Background(), bson.M{"_id": entity.GetID()})
 	if err != nil {
@@ -60,7 +60,7 @@ func (a *adapter[T]) Delete(entity T, table string) utils.ApiException {
 	return nil
 }
 
-func (a *adapter[T]) List(table string) ([]T, utils.ApiException) {
+func (a *adapter[T]) List(table string) ([]T, *utils.AppException) {
 	var databse = SecretService.GetSecret("MONGO_INITDB_DATABASE")
 	var entities []T
 	cursor, err := MongoDatabase.DB().Database(databse).Collection(table).Find(context.Background(), bson.M{})

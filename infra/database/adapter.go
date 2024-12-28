@@ -12,6 +12,6 @@ type databaseType interface {
 }
 
 type DatabaseAdapter[T databaseType] interface {
-	Connect() (T, utils.ApiException)
+	Connect() (T, *utils.AppException)
 	DB() T
 }

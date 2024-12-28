@@ -13,7 +13,7 @@ func CreateDog(controller *gin.Context) {
 	result, err := DogCreate().DogCreateExecute(&entity)
 
 	if err != nil {
-		controller.JSON(500, err.Error())
+		controller.JSON(err.GetStatus(), err.Message)
 		return
 	}
 
@@ -25,7 +25,7 @@ func DeleteDog(controller *gin.Context) {
 	err := DogDelete().DogDeleteExecute(id)
 
 	if err != nil {
-		controller.JSON(500, err.Error())
+		controller.JSON(err.GetStatus(), err.Message)
 		return
 	}
 
@@ -37,7 +37,7 @@ func GetDog(controller *gin.Context) {
 	result, err := DogGetByID().DogGetByIDExecute(id)
 
 	if err != nil {
-		controller.JSON(500, err.Error())
+		controller.JSON(err.GetStatus(), err.Message)
 		return
 	}
 
@@ -48,7 +48,7 @@ func ListDog(controller *gin.Context) {
 	result, err := DogList().DogListExecute()
 
 	if err != nil {
-		controller.JSON(500, err.Error())
+		controller.JSON(err.GetStatus(), err.Message)
 		return
 	}
 
@@ -63,7 +63,7 @@ func UpdateDog(controller *gin.Context) {
 	result, err := DogUpdate().DogUpdateExecute(&entity)
 
 	if err != nil {
-		controller.JSON(500, err.Error())
+		controller.JSON(err.GetStatus(), err.Message)
 		return
 	}
 

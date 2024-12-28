@@ -19,7 +19,7 @@ var redisCache *redis.Client
 
 type adapter struct{}
 
-func (a adapter) Delete(key string) utils.ApiException {
+func (a adapter) Delete(key string) *utils.AppException {
 	err := redisCache.Del(ctx, key).Err()
 	if err != nil {
 		return utils.ApiInternalServerException(err.Error())
@@ -28,7 +28,7 @@ func (a adapter) Delete(key string) utils.ApiException {
 	return nil
 }
 
-func (a adapter) Set(key string, value any, expired time.Duration) utils.ApiException {
+func (a adapter) Set(key string, value any, expired time.Duration) *utils.AppException {
 	err := redisCache.Set(ctx, key, value, expired).Err()
 	if err != nil {
 		return utils.ApiInternalServerException(err.Error())
@@ -37,7 +37,7 @@ func (a adapter) Set(key string, value any, expired time.Duration) utils.ApiExce
 	return nil
 }
 
-func (a adapter) Get(key string) (string, utils.ApiException) {
+func (a adapter) Get(key string) (string, *utils.AppException) {
 	val, err := redisCache.Get(ctx, key).Result()
 	if err != nil {
 		return "", utils.ApiInternalServerException(err.Error())
@@ -50,7 +50,7 @@ func (a adapter) Cache() *redis.Client {
 	return redisCache
 }
 
-func (a adapter) Connect() (*redis.Client, utils.ApiException) {
+func (a adapter) Connect() (*redis.Client, *utils.AppException) {
 	host := EnvService.GetSecret("REDIS_HOST")
 	port := EnvService.GetSecret("REDIS_PORT")
 

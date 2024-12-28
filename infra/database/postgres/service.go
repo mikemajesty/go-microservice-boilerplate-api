@@ -24,7 +24,7 @@ func (adapter *adapter) DB() *gorm.DB {
 	return db
 }
 
-func (adapter *adapter) Connect() (*gorm.DB, utils.ApiException) {
+func (adapter *adapter) Connect() (*gorm.DB, *utils.AppException) {
 	host := EnvService.GetSecret("POSTGRES_HOST")
 	port := EnvService.GetSecret("POSTGRES_PORT")
 	user := EnvService.GetSecret("POSTGRES_USER")

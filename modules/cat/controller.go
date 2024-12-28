@@ -13,7 +13,7 @@ func CreateCat(controller *gin.Context) {
 	result, err := CatCreate().CatCreateExecute(&entity)
 
 	if err != nil {
-		controller.JSON(500, err.Error())
+		controller.JSON(err.GetStatus(), err.GetMessage())
 		return
 	}
 
@@ -25,7 +25,7 @@ func DeleteCat(controller *gin.Context) {
 	err := CatDelete().CatDeleteExecute(id)
 
 	if err != nil {
-		controller.JSON(404, err.Error())
+		controller.JSON(err.GetStatus(), err.Message)
 		return
 	}
 
@@ -37,7 +37,7 @@ func GetCatByID(controller *gin.Context) {
 	result, err := CatGetByID().CatGetByIDExecute(id)
 
 	if err != nil {
-		controller.JSON(404, err.Error())
+		controller.JSON(err.GetStatus(), err.Message)
 		return
 	}
 
@@ -53,7 +53,7 @@ func UpdateCat(controller *gin.Context) {
 	result, err := CatUpdate().CatUpdateExecute(&entity)
 
 	if err != nil {
-		controller.JSON(500, err.Error())
+		controller.JSON(err.GetStatus(), err.Message)
 		return
 	}
 
@@ -64,7 +64,7 @@ func ListCat(controller *gin.Context) {
 	result, err := CatList().CatListExecute()
 
 	if err != nil {
-		controller.JSON(500, err.Error())
+		controller.JSON(err.GetStatus(), err.Message)
 		return
 	}
 

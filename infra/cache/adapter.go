@@ -13,9 +13,9 @@ type CacheAdapterType interface {
 }
 
 type CacheAdapter[T CacheAdapterType] interface {
-	Connect() (T, utils.ApiException)
+	Connect() (T, *utils.AppException)
 	Cache() T
-	Delete(key string) utils.ApiException
-	Get(key string) (string, utils.ApiException)
-	Set(key string, value any, expired time.Duration) utils.ApiException
+	Delete(key string) *utils.AppException
+	Get(key string) (string, *utils.AppException)
+	Set(key string, value any, expired time.Duration) *utils.AppException
 }

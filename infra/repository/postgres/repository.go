@@ -15,7 +15,7 @@ var PostgresDatabase = infra_database.DatabaseAdapter[*gorm.DB](infra_database_p
 
 type adapter[T utils.EntityAdapter] struct{}
 
-func (a *adapter[T]) Create(entity T, table string) (string, utils.ApiException) {
+func (a *adapter[T]) Create(entity T, table string) (string, *utils.AppException) {
 	entity.SetID(primitive.NewObjectID().Hex())
 	entity.SetCreatedAt()
 	entity.SetUpdatedAt()
@@ -28,7 +28,7 @@ func (a *adapter[T]) Create(entity T, table string) (string, utils.ApiException)
 	return entity.GetID().(string), nil
 }
 
-func (a *adapter[T]) FindByID(input *infra_repository.FindOneInput[string], table string) (T, utils.ApiException) {
+func (a *adapter[T]) FindByID(input *infra_repository.FindOneInput[string], table string) (T, *utils.AppException) {
 	fmt.Println(input.PostgresFilter, "input")
 	var entity = new(T)
 	err := PostgresDatabase.DB().Table(table).First(entity, input.PostgresFilter)
@@ -38,7 +38,7 @@ func (a *adapter[T]) FindByID(input *infra_repository.FindOneInput[string], tabl
 	return *entity, nil
 }
 
-func (a *adapter[T]) Update(entity T, table string) (string, utils.ApiException) {
+func (a *adapter[T]) Update(entity T, table string) (string, *utils.AppException) {
 	entity.SetUpdatedAt()
 	result := PostgresDatabase.DB().Table(table).Save(&entity)
 	if result.Error != nil {
@@ -47,16 +47,16 @@ func (a *adapter[T]) Update(entity T, table string) (string, utils.ApiException)
 	return entity.GetID().(string), nil
 }
 
-func (a *adapter[T]) Delete(entity T, table string) utils.ApiException {
+func (a *adapter[T]) Delete(entity T, table string) *utils.AppException {
 	fmt.Println(entity.GetID())
 	result := PostgresDatabase.DB().Table(table).Delete(&entity)
 	if result.Error != nil {
-		return result.Error
+		return utils.ApiNotFoundException(result.Error.Error())
 	}
 	return nil
 }
 
-func (a *adapter[T]) List(table string) ([]T, utils.ApiException) {
+func (a *adapter[T]) List(table string) ([]T, *utils.AppException) {
 	var entities []T
 	result := PostgresDatabase.DB().Table(table).Find(&entities)
 	if result.Error != nil {

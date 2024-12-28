@@ -26,7 +26,7 @@ func (adapter *adapter) DB() *mongo.Client {
 	return db
 }
 
-func (adapter *adapter) Connect() (*mongo.Client, utils.ApiException) {
+func (adapter *adapter) Connect() (*mongo.Client, *utils.AppException) {
 	uri := EnvService.GetSecret("MONGO_URI")
 	clientOptions := options.Client().ApplyURI(uri)
 

@@ -5,6 +5,7 @@ import (
 	core_cat_entity "go-microservice-boilerplate-api/core/cat/entity"
 	core_cat_repository "go-microservice-boilerplate-api/core/cat/repository"
 	core_usecase_cat "go-microservice-boilerplate-api/core/cat/use-case"
+	"go-microservice-boilerplate-api/utils"
 )
 
 var catRepository core_cat_repository.CatRepositoryAdapter = CreateCatRepository()
@@ -15,13 +16,13 @@ func CatCreate() core_usecase_cat.CatCreateAdapter {
 	return &createAdatper{}
 }
 
-func (c *createAdatper) CatCreateExecute(cat *core_cat_entity.CatEntity) (string, error) {
+func (c *createAdatper) CatCreateExecute(cat *core_cat_entity.CatEntity) (string, *utils.AppException) {
 	return core_usecase_cat.CatCreateUsecase(catRepository)(cat)
 }
 
 type deleteAdatper struct{}
 
-func (d *deleteAdatper) CatDeleteExecute(input string) error {
+func (d *deleteAdatper) CatDeleteExecute(input string) *utils.AppException {
 	return core_usecase_cat.CatDeleteUsecase(catRepository)(input)
 }
 
@@ -31,7 +32,7 @@ func CatDelete() core_usecase_cat.CatDeleteAdapter {
 
 type getByIDAdatper struct{}
 
-func (d *getByIDAdatper) CatGetByIDExecute(input string) (*core_cat.CatEntity, error) {
+func (d *getByIDAdatper) CatGetByIDExecute(input string) (*core_cat.CatEntity, *utils.AppException) {
 	return core_usecase_cat.CatGetByIDUsecase(catRepository)(input)
 }
 
@@ -41,7 +42,7 @@ func CatGetByID() core_usecase_cat.CatGetByIDAdapter {
 
 type updateAdatper struct{}
 
-func (d *updateAdatper) CatUpdateExecute(input *core_cat.CatEntity) (*core_cat.CatEntity, error) {
+func (d *updateAdatper) CatUpdateExecute(input *core_cat.CatEntity) (*core_cat.CatEntity, *utils.AppException) {
 	return core_usecase_cat.CatUpdateUsecase(catRepository)(input)
 }
 
@@ -51,7 +52,7 @@ func CatUpdate() core_usecase_cat.CatUpdateAdapter {
 
 type listAdatper struct{}
 
-func (d *listAdatper) CatListExecute() ([]core_cat.CatEntity, error) {
+func (d *listAdatper) CatListExecute() ([]core_cat.CatEntity, *utils.AppException) {
 	return core_usecase_cat.CatListUsecase(catRepository)()
 }
 

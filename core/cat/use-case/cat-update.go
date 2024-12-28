@@ -8,11 +8,11 @@ import (
 )
 
 type CatUpdateAdapter interface {
-	CatUpdateExecute(cat *core_cat.CatEntity) (*core_cat.CatEntity, error)
+	CatUpdateExecute(cat *core_cat.CatEntity) (*core_cat.CatEntity, *utils.AppException)
 }
 
-func CatUpdateUsecase(repository core_cat_repository.CatRepositoryAdapter) func(input *core_cat.CatEntity) (*core_cat.CatEntity, error) {
-	return func(input *core_cat.CatEntity) (*core_cat.CatEntity, error) {
+func CatUpdateUsecase(repository core_cat_repository.CatRepositoryAdapter) func(input *core_cat.CatEntity) (*core_cat.CatEntity, *utils.AppException) {
+	return func(input *core_cat.CatEntity) (*core_cat.CatEntity, *utils.AppException) {
 		filter := infra_repository.FindOneInput[string]{}
 		entity, err := repository.Base().FindByID(filter.CreatePostgresFilter(&utils.Entity[string]{ID: input.ID}), "cats")
 

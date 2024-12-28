@@ -7,11 +7,11 @@ import (
 )
 
 type CatDeleteAdapter interface {
-	CatDeleteExecute(id string) error
+	CatDeleteExecute(id string) *utils.AppException
 }
 
-func CatDeleteUsecase(repository core_cat_repository.CatRepositoryAdapter) func(id string) error {
-	return func(id string) error {
+func CatDeleteUsecase(repository core_cat_repository.CatRepositoryAdapter) func(id string) *utils.AppException {
+	return func(id string) *utils.AppException {
 		filter := infra_repository.FindOneInput[string]{}
 		entity, errNotFound := repository.Base().FindByID(filter.CreatePostgresFilter(&utils.Entity[string]{ID: id}), "cats")
 

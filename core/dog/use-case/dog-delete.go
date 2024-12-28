@@ -3,17 +3,18 @@ package core_dog
 import (
 	core_dog_repository "go-microservice-boilerplate-api/core/dog/repository"
 	infra_repository "go-microservice-boilerplate-api/infra/repository"
+	"go-microservice-boilerplate-api/utils"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type DogDeleteAdapter interface {
-	DogDeleteExecute(id string) error
+	DogDeleteExecute(id string) *utils.AppException
 }
 
-func DogDeleteUsecase(repository core_dog_repository.DogRepositoryAdapter) func(id string) error {
-	return func(id string) error {
+func DogDeleteUsecase(repository core_dog_repository.DogRepositoryAdapter) func(id string) *utils.AppException {
+	return func(id string) *utils.AppException {
 		filter := infra_repository.FindOneInput[primitive.ObjectID]{}
 		objectID, _ := primitive.ObjectIDFromHex(id)
 
