@@ -2,10 +2,13 @@ package modules_dog
 
 import (
 	core_dog_entity "go-microservice-boilerplate-api/core/dog/entity"
+	infra "go-microservice-boilerplate-api/infra/logger"
 
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
+
+var LoggerService = infra.LoggerAdapter(infra.CreateLogger())
 
 func CreateDog(controller *gin.Context) {
 	var entity = core_dog_entity.DogEntity{}
@@ -13,6 +16,7 @@ func CreateDog(controller *gin.Context) {
 	result, err := DogCreate().DogCreateExecute(&entity)
 
 	if err != nil {
+		LoggerService.Error(err.GetMessage(), infra.InfoAttr{Key: "status", Value: err.GetStatus()})
 		controller.JSON(err.GetStatus(), err.GetMessage())
 		return
 	}
@@ -25,6 +29,7 @@ func DeleteDog(controller *gin.Context) {
 	err := DogDelete().DogDeleteExecute(id)
 
 	if err != nil {
+		LoggerService.Error(err.GetMessage(), infra.InfoAttr{Key: "status", Value: err.GetStatus()})
 		controller.JSON(err.GetStatus(), err.GetMessage())
 		return
 	}
@@ -37,6 +42,7 @@ func GetDog(controller *gin.Context) {
 	result, err := DogGetByID().DogGetByIDExecute(id)
 
 	if err != nil {
+		LoggerService.Error(err.GetMessage(), infra.InfoAttr{Key: "status", Value: err.GetStatus()})
 		controller.JSON(err.GetStatus(), err.GetMessage())
 		return
 	}
@@ -48,6 +54,7 @@ func ListDog(controller *gin.Context) {
 	result, err := DogList().DogListExecute()
 
 	if err != nil {
+		LoggerService.Error(err.GetMessage(), infra.InfoAttr{Key: "status", Value: err.GetStatus()})
 		controller.JSON(err.GetStatus(), err.GetMessage())
 		return
 	}
@@ -61,8 +68,8 @@ func UpdateDog(controller *gin.Context) {
 	entity.SetID(objectID)
 	controller.Bind(&entity)
 	result, err := DogUpdate().DogUpdateExecute(&entity)
-
 	if err != nil {
+		LoggerService.Error(err.GetMessage(), infra.InfoAttr{Key: "status", Value: err.GetStatus()})
 		controller.JSON(err.GetStatus(), err.GetMessage())
 		return
 	}
