@@ -3,6 +3,7 @@ package cache
 import (
 	"fmt"
 	cacheAdapter "go-microservice-boilerplate-api/infra/cache"
+	"go-microservice-boilerplate-api/utils"
 	"time"
 
 	"github.com/patrickmn/go-cache"
@@ -16,27 +17,27 @@ func (a adapter) Cache() *cache.Cache {
 	return _cache
 }
 
-func (a adapter) Connect() (*cache.Cache, error) {
+func (a adapter) Connect() (*cache.Cache, utils.ApiException) {
 	fmt.Println("Successfully connected to Cache Memory")
 	_cache = cache.New(cache.DefaultExpiration, cache.DefaultExpiration)
 	return _cache, nil
 }
 
-func (a adapter) Set(key string, value any, expired time.Duration) error {
+func (a adapter) Set(key string, value any, expired time.Duration) utils.ApiException {
 	_cache.Set(key, value, cache.DefaultExpiration)
 	return nil
 }
 
-func (a adapter) Get(key string) (string, error) {
+func (a adapter) Get(key string) (string, utils.ApiException) {
 	val, found := _cache.Get(key)
 	if !found {
-		return "", nil
+		return "", utils.ApiNotFoundException("Key not found")
 	}
 
 	return val.(string), nil
 }
 
-func (a adapter) Delete(key string) error {
+func (a adapter) Delete(key string) utils.ApiException {
 	_cache.Delete(key)
 	return nil
 }

@@ -1,10 +1,10 @@
 package infra_database_postgres
 
 import (
-	"errors"
 	"fmt"
 	infra_database "go-microservice-boilerplate-api/infra/database"
 	"go-microservice-boilerplate-api/infra/secret"
+	"go-microservice-boilerplate-api/utils"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -24,7 +24,7 @@ func (adapter *adapter) DB() *gorm.DB {
 	return db
 }
 
-func (adapter *adapter) Connect() (*gorm.DB, error) {
+func (adapter *adapter) Connect() (*gorm.DB, utils.ApiException) {
 	host := EnvService.GetSecret("POSTGRES_HOST")
 	port := EnvService.GetSecret("POSTGRES_PORT")
 	user := EnvService.GetSecret("POSTGRES_USER")
@@ -35,7 +35,7 @@ func (adapter *adapter) Connect() (*gorm.DB, error) {
 	con, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 	if err != nil {
-		return nil, errors.New("failed to connect to Postgres")
+		return nil, utils.ApiInternalServerException(err.Error())
 	}
 	db = con
 

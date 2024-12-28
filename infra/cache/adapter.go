@@ -1,6 +1,7 @@
 package cache
 
 import (
+	"go-microservice-boilerplate-api/utils"
 	"time"
 
 	goCache "github.com/patrickmn/go-cache"
@@ -12,9 +13,9 @@ type CacheAdapterType interface {
 }
 
 type CacheAdapter[T CacheAdapterType] interface {
-	Connect() (T, error)
+	Connect() (T, utils.ApiException)
 	Cache() T
-	Delete(key string) error
-	Get(key string) (string, error)
-	Set(key string, value any, expired time.Duration) error
+	Delete(key string) utils.ApiException
+	Get(key string) (string, utils.ApiException)
+	Set(key string, value any, expired time.Duration) utils.ApiException
 }

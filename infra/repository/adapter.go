@@ -1,6 +1,7 @@
 package infra_repository
 
 import (
+	"go-microservice-boilerplate-api/utils"
 	utils_entity "go-microservice-boilerplate-api/utils"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -26,9 +27,9 @@ func (f FindOneInput[T]) CreatePostgresFilter(filter *utils_entity.Entity[T]) *F
 }
 
 type IRepository[T utils_entity.EntityAdapter, P utils_entity.EntityIDAdapter] interface {
-	Create(entity T, table string) (string, error)
-	FindByID(input *FindOneInput[P], table string) (T, error)
-	Update(entity T, table string) (string, error)
-	Delete(entity T, table string) error
-	List(table string) ([]T, error)
+	Create(entity T, table string) (string, utils.ApiException)
+	FindByID(input *FindOneInput[P], table string) (T, utils.ApiException)
+	Update(entity T, table string) (string, utils.ApiException)
+	Delete(entity T, table string) utils.ApiException
+	List(table string) ([]T, utils.ApiException)
 }

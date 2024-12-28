@@ -1,6 +1,8 @@
 package infra_database
 
 import (
+	"go-microservice-boilerplate-api/utils"
+
 	"go.mongodb.org/mongo-driver/mongo"
 	"gorm.io/gorm"
 )
@@ -10,6 +12,6 @@ type databaseType interface {
 }
 
 type DatabaseAdapter[T databaseType] interface {
-	Connect() (T, error)
+	Connect() (T, utils.ApiException)
 	DB() T
 }

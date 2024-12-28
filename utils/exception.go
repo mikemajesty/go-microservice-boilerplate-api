@@ -1,49 +1,53 @@
 package utils
 
-type AppException struct {
+import "errors"
+
+type appException struct {
 	Status  int
-	Message string
+	Message error
 }
 
-func (e *AppException) ApiInternalServerException(message string) AppException {
+type ApiException interface {
+	appException | interface{}
+}
+
+func ApiInternalServerException(message string) ApiException {
+	e := appException{}
 	e.Status = 500
-	e.Message = message
-	return *e
+	e.Message = errors.New(message)
+	return e
 }
 
-func (e *AppException) ApiNotFoundException(message string) AppException {
+func ApiNotFoundException(message string) ApiException {
+	e := appException{}
 	e.Status = 404
-	e.Message = message
-	return *e
+	e.Message = errors.New(message)
+	return e
 }
 
-func (e *AppException) ApiConflictException(message string) AppException {
+func ApiConflictException(message string) ApiException {
+	e := appException{}
 	e.Status = 409
-	e.Message = message
-	return *e
+	e.Message = errors.New(message)
+	return e
 }
-func (e *AppException) ApiUnauthorizedException(message string) AppException {
+func ApiUnauthorizedException(message string) ApiException {
+	e := appException{}
 	e.Status = 401
-	e.Message = message
-	return *e
+	e.Message = errors.New(message)
+	return e
 }
 
-func (e *AppException) ApiBadRequestException(message string) AppException {
+func ApiBadRequestException(message string) ApiException {
+	e := appException{}
 	e.Status = 400
-	e.Message = message
-	return *e
+	e.Message = errors.New(message)
+	return e
 }
 
-func (e *AppException) ApiForbiddenException(message string) AppException {
+func ApiForbiddenException(message string) ApiException {
+	e := appException{}
 	e.Status = 403
-	e.Message = message
-	return *e
-}
-
-func (e *AppException) GetStatus() int {
-	return e.Status
-}
-
-func (e *AppException) GetMessage() string {
-	return e.Message
+	e.Message = errors.New(message)
+	return e
 }
