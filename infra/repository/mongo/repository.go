@@ -14,8 +14,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-var MongoDatabase = infra_database.Adapter[*mongo.Client](infra_database_mongo.CreateConnectMongo())
-var SecretService = secret.Adapter(secret.CreateSecret())
+var MongoDatabase = infra_database.DatabaseAdapter[*mongo.Client](infra_database_mongo.CreateConnectMongo())
+var SecretService = secret.SecretAdapter(secret.CreateSecret())
 
 type adapter[T utils_entity.EntityAdapter] struct{}
 

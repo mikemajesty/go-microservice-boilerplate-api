@@ -11,7 +11,7 @@ import (
 	"gorm.io/gorm"
 )
 
-var PostgresDatabase = infra_database.Adapter[*gorm.DB](infra_database_postgres.CreateConnectPostgres())
+var PostgresDatabase = infra_database.DatabaseAdapter[*gorm.DB](infra_database_postgres.CreateConnectPostgres())
 
 type adapter[T utils_entity.EntityAdapter] struct{}
 

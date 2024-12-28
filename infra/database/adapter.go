@@ -9,7 +9,7 @@ type databaseType interface {
 	*mongo.Client | *gorm.DB
 }
 
-type Adapter[T databaseType] interface {
+type DatabaseAdapter[T databaseType] interface {
 	Connect() (T, error)
 	DB() T
 }

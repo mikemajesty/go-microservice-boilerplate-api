@@ -12,11 +12,11 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-var EnvService = secret.Adapter(secret.CreateSecret())
+var EnvService = secret.SecretAdapter(secret.CreateSecret())
 
 type adapter struct{}
 
-func CreateConnectMongo() infra_database.Adapter[*mongo.Client] {
+func CreateConnectMongo() infra_database.DatabaseAdapter[*mongo.Client] {
 	return &adapter{}
 }
 

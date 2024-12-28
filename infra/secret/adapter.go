@@ -1,6 +1,6 @@
 package secret
 
-type Adapter interface {
+type SecretAdapter interface {
 	GetSecret(key string) string
 	InitEnvs()
 }

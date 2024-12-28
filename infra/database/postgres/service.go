@@ -10,11 +10,11 @@ import (
 	"gorm.io/gorm"
 )
 
-var EnvService = secret.Adapter(secret.CreateSecret())
+var EnvService = secret.SecretAdapter(secret.CreateSecret())
 
 type adapter struct{}
 
-func CreateConnectPostgres() infra_database.Adapter[*gorm.DB] {
+func CreateConnectPostgres() infra_database.DatabaseAdapter[*gorm.DB] {
 	return &adapter{}
 }
 

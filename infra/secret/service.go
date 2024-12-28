@@ -10,7 +10,7 @@ import (
 
 type adapter struct{}
 
-func CreateSecret() Adapter {
+func CreateSecret() SecretAdapter {
 	return &adapter{}
 }
 

@@ -19,9 +19,9 @@ import (
 	"gorm.io/gorm"
 )
 
-var SecretService = secret.Adapter(secret.CreateSecret())
-var PostgresService = infra_database.Adapter[*gorm.DB](infra_database_postgres.CreateConnectPostgres())
-var MongoService = infra_database.Adapter[*mongo.Client](infra_database_mongo.CreateConnectMongo())
+var SecretService = secret.SecretAdapter(secret.CreateSecret())
+var PostgresService = infra_database.DatabaseAdapter[*gorm.DB](infra_database_postgres.CreateConnectPostgres())
+var MongoService = infra_database.DatabaseAdapter[*mongo.Client](infra_database_mongo.CreateConnectMongo())
 var RedisService = cache.CacheAdapter[*redis.Client](redisCache.CreateRedis())
 var CacheMemoryService = cache.CacheAdapter[*cacheMemory.Cache](memoryCache.CreateMemory())
 

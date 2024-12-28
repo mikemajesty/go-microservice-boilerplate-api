@@ -9,8 +9,8 @@ import (
 	"gorm.io/gorm"
 )
 
-var SecretService = secret.Adapter(secret.CreateSecret())
-var PostgresService = infra_database.Adapter[*gorm.DB](infra_database_postgres.CreateConnectPostgres())
+var SecretService = secret.SecretAdapter(secret.CreateSecret())
+var PostgresService = infra_database.DatabaseAdapter[*gorm.DB](infra_database_postgres.CreateConnectPostgres())
 
 func init() {
 	SecretService.InitEnvs()
