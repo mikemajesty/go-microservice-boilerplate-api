@@ -16,7 +16,7 @@ func CreateCat(controller *gin.Context) {
 	result, err := CatCreate().CatCreateExecute(&entity)
 
 	if err != nil {
-		LoggerService.Error(err.GetMessage(), infra.InfoAttr{Key: "status", Value: err.GetStatus()})
+		LoggerService.Error(err.GetMessage(), infra.LogAttrInput{"status": err.GetStatus()})
 		controller.JSON(err.GetStatus(), err.GetMessage())
 		return
 	}
@@ -29,7 +29,7 @@ func DeleteCat(controller *gin.Context) {
 	err := CatDelete().CatDeleteExecute(id)
 
 	if err != nil {
-		LoggerService.Error(err.GetMessage(), infra.InfoAttr{Key: "status", Value: err.GetStatus()})
+		LoggerService.Error(err.GetMessage(), infra.LogAttrInput{"status": err.GetStatus()})
 		controller.JSON(err.GetStatus(), err.GetMessage())
 		return
 	}
@@ -42,7 +42,7 @@ func GetCatByID(controller *gin.Context) {
 	result, err := CatGetByID().CatGetByIDExecute(id)
 
 	if err != nil {
-		LoggerService.Error(err.GetMessage(), infra.InfoAttr{Key: "status", Value: err.GetStatus()})
+		LoggerService.Error(err.GetMessage(), infra.LogAttrInput{"status": err.GetStatus()})
 		controller.JSON(err.GetStatus(), err.GetMessage())
 		return
 	}
@@ -59,7 +59,7 @@ func UpdateCat(controller *gin.Context) {
 	result, err := CatUpdate().CatUpdateExecute(&entity)
 
 	if err != nil {
-		LoggerService.Error(err.GetMessage(), infra.InfoAttr{Key: "status", Value: err.GetStatus()})
+		LoggerService.Error(err.GetMessage(), infra.LogAttrInput{"status": err.GetStatus()})
 		controller.JSON(err.GetStatus(), err.GetMessage())
 		return
 	}
@@ -71,7 +71,7 @@ func ListCat(controller *gin.Context) {
 	result, err := CatList().CatListExecute()
 
 	if err != nil {
-		LoggerService.Error(err.GetMessage(), infra.InfoAttr{Key: "status", Value: err.GetStatus()})
+		LoggerService.Error(err.GetMessage(), infra.LogAttrInput{"status": err.GetStatus()})
 		controller.JSON(err.GetStatus(), err.GetMessage())
 		return
 	}

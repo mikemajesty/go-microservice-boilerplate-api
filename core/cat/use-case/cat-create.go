@@ -17,7 +17,7 @@ func CatCreateUsecase(repository core_cat_repository.CatRepositoryAdapter, logge
 		if err != nil {
 			return nil, err
 		}
-		logger.Info("Cat created", infra.InfoAttr{Key: "id", Value: catID})
+		logger.Info("Cat created", infra.LogAttrInput{"id": catID})
 		return catID, nil
 	}
 }

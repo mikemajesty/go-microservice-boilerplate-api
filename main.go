@@ -12,6 +12,7 @@ import (
 	"go-microservice-boilerplate-api/infra/secret"
 	modules_cat "go-microservice-boilerplate-api/modules/cat"
 	modules_dog "go-microservice-boilerplate-api/modules/dog"
+	"go-microservice-boilerplate-api/observables"
 	"go-microservice-boilerplate-api/utils"
 
 	"github.com/gin-gonic/gin"
@@ -35,18 +36,20 @@ func init() {
 	MongoService.Connect()
 	RedisService.Connect()
 	CacheMemoryService.Connect()
-	LoggerService.Connect()
+	mw := &infra.MongoWriter{Client: MongoService.DB()}
+	LoggerService.Connect(mw)
 }
 
 func main() {
 	ctx := context.Background()
+
+	utils.Route.Use(observables.GinBodyLogMiddleware(LoggerService))
 	utils.Route.Use(func(g *gin.Context) {
-		LoggerService.SetContext(utils.ContextWithValues(ctx, "traceID", uuid.New().String()))
+		LoggerService.SetContext(utils.ContextWithValues(ctx, "traceId", uuid.New().String()))
 		g.Next()
 	})
 
 	utils.Route.GET("/", func(c *gin.Context) {
-		LoggerService.Info("passou pela rota")
 		c.JSON(200, "up and running")
 	})
 

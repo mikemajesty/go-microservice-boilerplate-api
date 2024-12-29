@@ -2,49 +2,71 @@ package infra
 
 import (
 	"context"
-	"log/slog"
+	"encoding/json"
+	"io"
+	"os"
+
+	log "github.com/sirupsen/logrus"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
-type loggerAdapter struct{}
+type loggerOtherAdapter struct{}
 
-var logger *slog.Logger
+var logger *log.Logger
 var ctx context.Context
 
-func CreateLogger() LoggerAdapter {
-	return &loggerAdapter{}
+func (l *loggerOtherAdapter) Connect(mv *MongoWriter) {
+	_logger := log.New()
+	_logger.SetFormatter(&log.JSONFormatter{})
+
+	_logger.SetOutput(io.MultiWriter(os.Stdout, mv))
+
+	_logger.SetLevel(log.InfoLevel)
+	logger = _logger
 }
 
-type InfoAttr struct {
-	Value any
-	Key   string
+func (l *loggerOtherAdapter) Error(message string, attrs log.Fields) {
+	attrs["traceId"] = ctx.Value("traceId")
+	logger.WithContext(ctx).WithFields(attrs).Error(message)
 }
 
-func (l *loggerAdapter) Info(message string, attrs ...InfoAttr) {
-	var attributes []any
-	for _, value := range attrs {
-		attributes = append(attributes, slog.Attr{Key: value.Key, Value: slog.AnyValue(value.Value)})
-	}
-	attributes = append(attributes, slog.Attr{Key: "traceID", Value: slog.AnyValue(ctx.Value("traceID"))})
-	logger.InfoContext(ctx, message, attributes...)
+func (l *loggerOtherAdapter) Info(message string, attrs log.Fields) {
+	attrs["traceId"] = ctx.Value("traceId")
+	logger.WithContext(ctx).WithFields(attrs).Info(message)
 }
 
-func (l *loggerAdapter) Error(message string, attrs ...InfoAttr) {
-	var attributes []any
-	for _, value := range attrs {
-		attributes = append(attributes, slog.Attr{Key: value.Key, Value: slog.AnyValue(value.Value)})
-	}
-	attributes = append(attributes, slog.Attr{Key: "traceID", Value: slog.AnyValue(ctx.Value("traceID"))})
-	logger.ErrorContext(ctx, message, attributes...)
-}
-
-func (l *loggerAdapter) Connect() {
-	logger = slog.Default()
-}
-
-func (l *loggerAdapter) Logger() *slog.Logger {
+func (l *loggerOtherAdapter) Logger() *log.Logger {
 	return logger
 }
 
-func (l *loggerAdapter) SetContext(_ctx context.Context) {
+func (l *loggerOtherAdapter) SetContext(_ctx context.Context) {
 	ctx = _ctx
+}
+
+func CreateLogger() LoggerAdapter {
+	return &loggerOtherAdapter{}
+}
+
+type MongoWriter struct {
+	Client *mongo.Client
+}
+
+type write struct {
+	Level   string `bson:"level"`
+	Msg     string `bson:"msg"`
+	Time    string `bson:"time"`
+	TraceId string `bson:"traceId"`
+}
+
+func (mw *MongoWriter) Write(p []byte) (n int, err error) {
+	c := mw.Client.Database("go-microservice-boilerplate-api").Collection("logs")
+
+	data := write{}
+	json.Unmarshal(p, &data)
+
+	_, err = c.InsertOne(context.TODO(), data)
+	if err != nil {
+		return
+	}
+	return len(p), nil
 }

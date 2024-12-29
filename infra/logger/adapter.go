@@ -2,13 +2,16 @@ package infra
 
 import (
 	"context"
-	"log/slog"
+
+	log "github.com/sirupsen/logrus"
 )
 
+type LogAttrInput = log.Fields
+
 type LoggerAdapter interface {
-	Connect()
-	Logger() *slog.Logger
-	Error(message string, attrs ...InfoAttr)
+	Connect(database *MongoWriter)
+	Logger() *log.Logger
+	Error(message string, attrs LogAttrInput)
 	SetContext(ctx context.Context)
-	Info(message string, attrs ...InfoAttr)
+	Info(message string, attrs LogAttrInput)
 }

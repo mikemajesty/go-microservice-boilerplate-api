@@ -4,6 +4,8 @@ go 1.23.4
 
 require golang.org/x/exp v0.0.0-20241217172543-b2144cdd0a67
 
+require github.com/sirupsen/logrus v1.9.3 // indirect
+
 require (
 	github.com/andybalholm/brotli v1.1.1 // indirect
 	github.com/bytedance/sonic v1.12.6 // indirect
