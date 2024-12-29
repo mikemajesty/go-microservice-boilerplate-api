@@ -2,6 +2,7 @@ package utils
 
 import (
 	"errors"
+	"strings"
 )
 
 type AppException struct {
@@ -10,7 +11,6 @@ type AppException struct {
 }
 
 var mapMessage = map[int]Nullable[string]{
-	400: "Bad Request",
 	401: "Unauthorized",
 	403: "Forbidden",
 	404: "Not Found",
@@ -18,25 +18,29 @@ var mapMessage = map[int]Nullable[string]{
 	500: "Oops, an error occurred",
 }
 
-func getMessage(err *AppException) string {
+func getMessage(err *AppException) []string {
 	var message = mapMessage[err.GetStatus()]
 
 	if message != nil {
-		return message.(string)
+		return []string{message.(string)}
 	}
 
-	return err.Message.Error()
+	if err.GetStatus() == 400 {
+		return strings.Split(err.GetMessage(), ",")
+	}
+
+	return []string{err.GetMessage()}
 }
 
 func (e *AppException) Response(status int, traceId string) any {
 	return struct {
-		Message string `json:"message"`
-		TraceID string `json:"trace_id"`
-		Status  int    `json:"status"`
+		Messages []string `json:"messages"`
+		TraceID  string   `json:"trace_id"`
+		Status   int      `json:"status"`
 	}{
-		Message: getMessage(e),
-		Status:  status,
-		TraceID: traceId,
+		Messages: getMessage(e),
+		Status:   status,
+		TraceID:  traceId,
 	}
 }
 
