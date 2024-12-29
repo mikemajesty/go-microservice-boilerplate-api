@@ -17,7 +17,8 @@ func CreateDog(controller *gin.Context) {
 
 	if err != nil {
 		LoggerService.Error(err.GetMessage(), infra.LogAttrInput{"status": err.GetStatus()})
-		controller.JSON(err.GetStatus(), err.GetMessage())
+		trace, _ := controller.Get("traceId")
+		controller.JSON(err.GetStatus(), err.MessageResponse(err.GetStatus(), trace.(string)))
 		return
 	}
 
@@ -30,7 +31,8 @@ func DeleteDog(controller *gin.Context) {
 
 	if err != nil {
 		LoggerService.Error(err.GetMessage(), infra.LogAttrInput{"status": err.GetStatus()})
-		controller.JSON(err.GetStatus(), err.GetMessage())
+		trace, _ := controller.Get("traceId")
+		controller.JSON(err.GetStatus(), err.MessageResponse(err.GetStatus(), trace.(string)))
 		return
 	}
 
@@ -43,7 +45,8 @@ func GetDog(controller *gin.Context) {
 
 	if err != nil {
 		LoggerService.Error(err.GetMessage(), infra.LogAttrInput{"status": err.GetStatus()})
-		controller.JSON(err.GetStatus(), err.GetMessage())
+		trace, _ := controller.Get("traceId")
+		controller.JSON(err.GetStatus(), err.MessageResponse(err.GetStatus(), trace.(string)))
 		return
 	}
 
@@ -55,7 +58,8 @@ func ListDog(controller *gin.Context) {
 
 	if err != nil {
 		LoggerService.Error(err.GetMessage(), infra.LogAttrInput{"status": err.GetStatus()})
-		controller.JSON(err.GetStatus(), err.GetMessage())
+		trace, _ := controller.Get("traceId")
+		controller.JSON(err.GetStatus(), err.MessageResponse(err.GetStatus(), trace.(string)))
 		return
 	}
 
@@ -70,7 +74,8 @@ func UpdateDog(controller *gin.Context) {
 	result, err := DogUpdate().DogUpdateExecute(&entity)
 	if err != nil {
 		LoggerService.Error(err.GetMessage(), infra.LogAttrInput{"status": err.GetStatus()})
-		controller.JSON(err.GetStatus(), err.GetMessage())
+		trace, _ := controller.Get("traceId")
+		controller.JSON(err.GetStatus(), err.MessageResponse(err.GetStatus(), trace.(string)))
 		return
 	}
 

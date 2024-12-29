@@ -7,6 +7,17 @@ type AppException struct {
 	Message error
 }
 
+func (e *AppException) MessageResponse(status int, traceId string) any {
+	return struct {
+		Message, TraceID string
+		Status           int
+	}{
+		Message: e.Message.Error(),
+		Status:  status,
+		TraceID: traceId,
+	}
+}
+
 func (e *AppException) GetMessage() string {
 	return e.Message.Error()
 }

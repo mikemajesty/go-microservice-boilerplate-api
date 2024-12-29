@@ -45,7 +45,9 @@ func main() {
 
 	utils.Route.Use(observables.GinBodyLogMiddleware(LoggerService))
 	utils.Route.Use(func(g *gin.Context) {
-		LoggerService.SetContext(utils.ContextWithValues(ctx, "traceId", uuid.New().String()))
+		id := uuid.New().String()
+		g.Set("traceId", id)
+		LoggerService.SetContext(utils.ContextWithValues(ctx, "traceId", id))
 		g.Next()
 	})
 
