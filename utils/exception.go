@@ -1,18 +1,40 @@
 package utils
 
-import "errors"
+import (
+	"errors"
+)
 
 type AppException struct {
 	Status  int
 	Message error
 }
 
-func (e *AppException) MessageResponse(status int, traceId string) any {
+var mapMessage = map[int]Nullable[string]{
+	400: "Bad Request",
+	401: "Unauthorized",
+	403: "Forbidden",
+	404: "Not Found",
+	409: "Conflict",
+	500: "Oops, an error occurred",
+}
+
+func getMessage(err *AppException) string {
+	var message = mapMessage[err.GetStatus()]
+
+	if message != nil {
+		return message.(string)
+	}
+
+	return err.Message.Error()
+}
+
+func (e *AppException) Response(status int, traceId string) any {
 	return struct {
-		Message, TraceID string
-		Status           int
+		Message string `json:"message"`
+		TraceID string `json:"trace_id"`
+		Status  int    `json:"status"`
 	}{
-		Message: e.Message.Error(),
+		Message: getMessage(e),
 		Status:  status,
 		TraceID: traceId,
 	}
@@ -42,7 +64,7 @@ func ApiNotFoundException(message string) *AppException {
 
 func ApiConflictException(message string) *AppException {
 	e := AppException{}
-	e.Status = 409
+	e.Status = 406
 	e.Message = errors.New(message)
 	return &e
 }

@@ -21,7 +21,7 @@ func DogUpdateUsecase(repository core_dog_repository.DogRepositoryAdapter) func(
 		entity, err := repository.Base().FindByID(filter.CreateMongoFilter(&bson.D{{Key: "_id", Value: input.GetID()}}), "dogs")
 
 		if err != nil {
-			return entity, err
+			return entity, utils.ApiNotFoundException("dog with id " + input.ConvertIDToString() + " not found")
 		}
 
 		entity = input

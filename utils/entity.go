@@ -27,6 +27,15 @@ func (b *Entity[T]) GetID() any {
 	return b.ID
 }
 
+func (b *Entity[T]) ConvertIDToString() string {
+	switch id := b.GetID().(type) {
+	case primitive.ObjectID:
+		return id.Hex()
+	default:
+		return b.GetID().(string)
+	}
+}
+
 func (b *Entity[T]) SetID(id any) {
 	b.ID = id.(T)
 }
