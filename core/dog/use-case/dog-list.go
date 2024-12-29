@@ -6,10 +6,6 @@ import (
 	"go-microservice-boilerplate-api/utils"
 )
 
-type DogListAdapter interface {
-	DogListExecute() ([]core_dog.DogEntity, *utils.AppException)
-}
-
 func DogListUsecase(repository core_dog_repository.DogRepositoryAdapter) func() ([]core_dog.DogEntity, *utils.AppException) {
 	return func() ([]core_dog.DogEntity, *utils.AppException) {
 		entityList, err := repository.Base().List("dogs")

@@ -10,10 +10,6 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-type DogGetByIDAdapter interface {
-	DogGetByIDExecute(id string) (*core_dog.DogEntity, *utils.AppException)
-}
-
 func DogGetByIDUsecase(repository core_dog_repository.DogRepositoryAdapter) func(id string) (*core_dog.DogEntity, *utils.AppException) {
 	return func(id string) (*core_dog.DogEntity, *utils.AppException) {
 		filter := infra_repository.FindOneInput[primitive.ObjectID]{}

@@ -9,10 +9,6 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-type DogDeleteAdapter interface {
-	DogDeleteExecute(id string) *utils.AppException
-}
-
 func DogDeleteUsecase(repository core_dog_repository.DogRepositoryAdapter) func(id string) *utils.AppException {
 	return func(id string) *utils.AppException {
 		filter := infra_repository.FindOneInput[primitive.ObjectID]{}

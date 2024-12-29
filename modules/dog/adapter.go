@@ -3,58 +3,53 @@ package modules_dog
 import (
 	core_dog_entity "go-microservice-boilerplate-api/core/dog/entity"
 	core_dog_repository "go-microservice-boilerplate-api/core/dog/repository"
-	core_dog_usecase "go-microservice-boilerplate-api/core/dog/use-case"
 	"go-microservice-boilerplate-api/utils"
+
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 var dogRepository core_dog_repository.DogRepositoryAdapter = CreateDogRepository()
 
-type createAdatper struct{}
-
-func DogCreate() core_dog_usecase.DogCreateAdapter {
-	return &createAdatper{}
+type DogCreateAdapter interface {
+	DogCreateExecute(dog *core_dog_entity.DogEntity) (utils.Nullable[string], *utils.AppException)
+	Validate(dog *core_dog_entity.DogEntity) error
 }
 
-func (c *createAdatper) DogCreateExecute(dog *core_dog_entity.DogEntity) (utils.Nullable[string], *utils.AppException) {
-	return core_dog_usecase.DogCreateUsecase(dogRepository)(dog)
+func DogCreate() DogCreateAdapter {
+	return &CreateAdatper{}
 }
 
-type deleteAdatper struct{}
-
-func DogDelete() core_dog_usecase.DogDeleteAdapter {
-	return &deleteAdatper{}
+type DogDeleteAdapter interface {
+	DogDeleteExecute(id string) *utils.AppException
+	Validate(input primitive.ObjectID) error
 }
 
-func (c *deleteAdatper) DogDeleteExecute(id string) *utils.AppException {
-	return core_dog_usecase.DogDeleteUsecase(dogRepository)(id)
+func DogDelete() DogDeleteAdapter {
+	return &DeleteAdatper{}
 }
 
-type getByIDAdatper struct{}
-
-func DogGetByID() core_dog_usecase.DogGetByIDAdapter {
-	return &getByIDAdatper{}
+type DogGetByIDAdapter interface {
+	DogGetByIDExecute(id string) (*core_dog_entity.DogEntity, *utils.AppException)
+	Validate(input primitive.ObjectID) error
 }
 
-func (c *getByIDAdatper) DogGetByIDExecute(id string) (*core_dog_entity.DogEntity, *utils.AppException) {
-	return core_dog_usecase.DogGetByIDUsecase(dogRepository)(id)
+func DogGetByID() DogGetByIDAdapter {
+	return &GetByIDAdatper{}
 }
 
-type listAdatper struct{}
-
-func DogList() core_dog_usecase.DogListAdapter {
-	return &listAdatper{}
+type DogListAdapter interface {
+	DogListExecute() ([]core_dog_entity.DogEntity, *utils.AppException)
 }
 
-func (c *listAdatper) DogListExecute() ([]core_dog_entity.DogEntity, *utils.AppException) {
-	return core_dog_usecase.DogListUsecase(dogRepository)()
+func DogList() DogListAdapter {
+	return &ListAdatper{}
 }
 
-type updateAdatper struct{}
-
-func DogUpdate() core_dog_usecase.DogUpdateAdapter {
-	return &updateAdatper{}
+type DogUpdateAdapter interface {
+	DogUpdateExecute(dog *core_dog_entity.DogEntity) (*core_dog_entity.DogEntity, *utils.AppException)
+	Validate(dog *core_dog_entity.DogEntity) utils.Nullable[string]
 }
 
-func (c *updateAdatper) DogUpdateExecute(dog *core_dog_entity.DogEntity) (*core_dog_entity.DogEntity, *utils.AppException) {
-	return core_dog_usecase.DogUpdateUsecase(dogRepository)(dog)
+func DogUpdate() DogUpdateAdapter {
+	return &UpdateAdatper{}
 }
