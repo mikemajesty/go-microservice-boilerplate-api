@@ -7,10 +7,6 @@ import (
 	"go-microservice-boilerplate-api/utils"
 )
 
-type CatGetByIDAdapter interface {
-	CatGetByIDExecute(cat string) (*core_cat.CatEntity, *utils.AppException)
-}
-
 func CatGetByIDUsecase(repository core_cat_repository.CatRepositoryAdapter) func(input string) (*core_cat.CatEntity, *utils.AppException) {
 	return func(input string) (*core_cat.CatEntity, *utils.AppException) {
 		filter := infra_repository.FindOneInput[string]{}

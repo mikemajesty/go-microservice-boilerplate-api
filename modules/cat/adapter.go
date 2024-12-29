@@ -1,63 +1,57 @@
 package modules_cat
 
 import (
-	core_cat "go-microservice-boilerplate-api/core/cat/entity"
 	core_cat_entity "go-microservice-boilerplate-api/core/cat/entity"
 	core_cat_repository "go-microservice-boilerplate-api/core/cat/repository"
-	core_usecase_cat "go-microservice-boilerplate-api/core/cat/use-case"
 	infra "go-microservice-boilerplate-api/infra/logger"
 	"go-microservice-boilerplate-api/utils"
+
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 var catRepository core_cat_repository.CatRepositoryAdapter = CreateCatRepository()
 var loggerService infra.LoggerAdapter = infra.LoggerAdapter(infra.CreateLogger())
 
-type createAdatper struct{}
-
-func CatCreate() core_usecase_cat.CatCreateAdapter {
-	return &createAdatper{}
+type CatCreateAdapter interface {
+	CatCreateExecute(cat *core_cat_entity.CatEntity) (utils.Nullable[string], *utils.AppException)
+	Validate(cat *core_cat_entity.CatEntity) error
 }
 
-func (c *createAdatper) CatCreateExecute(cat *core_cat_entity.CatEntity) (utils.Nullable[string], *utils.AppException) {
-	return core_usecase_cat.CatCreateUsecase(catRepository, loggerService)(cat)
+func CatCreate() CatCreateAdapter {
+	return &CreateAdatper{}
 }
 
-type deleteAdatper struct{}
-
-func (d *deleteAdatper) CatDeleteExecute(input string) *utils.AppException {
-	return core_usecase_cat.CatDeleteUsecase(catRepository)(input)
+type CatDeleteAdapter interface {
+	CatDeleteExecute(id string) *utils.AppException
+	Validate(id primitive.ObjectID) error
 }
 
-func CatDelete() core_usecase_cat.CatDeleteAdapter {
-	return &deleteAdatper{}
+func CatDelete() CatDeleteAdapter {
+	return &DeleteAdatper{}
 }
 
-type getByIDAdatper struct{}
-
-func (d *getByIDAdatper) CatGetByIDExecute(input string) (*core_cat.CatEntity, *utils.AppException) {
-	return core_usecase_cat.CatGetByIDUsecase(catRepository)(input)
+type CatGetByIDAdapter interface {
+	CatGetByIDExecute(input string) (*core_cat_entity.CatEntity, *utils.AppException)
+	Validate(input primitive.ObjectID) error
 }
 
-func CatGetByID() core_usecase_cat.CatGetByIDAdapter {
-	return &getByIDAdatper{}
+func CatGetByID() CatGetByIDAdapter {
+	return &GetByIDAdatper{}
 }
 
-type updateAdatper struct{}
-
-func (d *updateAdatper) CatUpdateExecute(input *core_cat.CatEntity) (*core_cat.CatEntity, *utils.AppException) {
-	return core_usecase_cat.CatUpdateUsecase(catRepository)(input)
+type CatUpdateAdapter interface {
+	CatUpdateExecute(cat *core_cat_entity.CatEntity) (*core_cat_entity.CatEntity, *utils.AppException)
+	Validate(cat *core_cat_entity.CatEntity) utils.Nullable[string]
 }
 
-func CatUpdate() core_usecase_cat.CatUpdateAdapter {
-	return &updateAdatper{}
+func CatUpdate() CatUpdateAdapter {
+	return &UpdateAdatper{}
 }
 
-type listAdatper struct{}
-
-func (d *listAdatper) CatListExecute() ([]core_cat.CatEntity, *utils.AppException) {
-	return core_usecase_cat.CatListUsecase(catRepository)()
+type CatListAdapter interface {
+	CatListExecute() ([]core_cat_entity.CatEntity, *utils.AppException)
 }
 
-func CatList() core_usecase_cat.CatListAdapter {
-	return &listAdatper{}
+func CatList() CatListAdapter {
+	return &ListAdatper{}
 }

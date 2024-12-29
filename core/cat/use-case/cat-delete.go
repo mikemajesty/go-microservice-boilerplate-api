@@ -6,10 +6,6 @@ import (
 	"go-microservice-boilerplate-api/utils"
 )
 
-type CatDeleteAdapter interface {
-	CatDeleteExecute(id string) *utils.AppException
-}
-
 func CatDeleteUsecase(repository core_cat_repository.CatRepositoryAdapter) func(id string) *utils.AppException {
 	return func(id string) *utils.AppException {
 		filter := infra_repository.FindOneInput[string]{}

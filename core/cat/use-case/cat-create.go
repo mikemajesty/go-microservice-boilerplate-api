@@ -7,10 +7,6 @@ import (
 	"go-microservice-boilerplate-api/utils"
 )
 
-type CatCreateAdapter interface {
-	CatCreateExecute(cat *core_cat_entity.CatEntity) (utils.Nullable[string], *utils.AppException)
-}
-
 func CatCreateUsecase(repository core_cat_repository.CatRepositoryAdapter, logger infra.LoggerAdapter) func(input *core_cat_entity.CatEntity) (utils.Nullable[string], *utils.AppException) {
 	return func(input *core_cat_entity.CatEntity) (utils.Nullable[string], *utils.AppException) {
 		catID, err := repository.Base().Create(input, "cats")

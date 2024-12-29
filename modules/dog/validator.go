@@ -79,7 +79,7 @@ func (c *DeleteAdatper) DogDeleteExecute(id string) *utils.AppException {
 }
 
 func (c *CreateAdatper) Validate(dog *core_dog_entity.DogEntity) error {
-	return utils.ValidateSchema(dog.Name, "Name", validation.Required, validation.Length(3, 1000))
+	return utils.ValidateSchema(dog.Name, "Name", validation.Required, validation.Length(3, 100))
 }
 
 func (c *CreateAdatper) DogCreateExecute(dog *core_dog_entity.DogEntity) (utils.Nullable[string], *utils.AppException) {
