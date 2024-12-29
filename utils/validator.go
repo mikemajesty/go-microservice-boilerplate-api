@@ -17,11 +17,11 @@ func ValidateSchema(value interface{}, property string, rules ...validation.Rule
 	return errors.New(property + ": " + err.Error())
 }
 
-func IsObjectID(value primitive.ObjectID, property string) Nullable[error] {
+func IsObjectID(value primitive.ObjectID, property string) error {
 	var v, e = primitive.ObjectIDFromHex(value.Hex())
 
 	if e != nil {
-		return e.Error()
+		return e
 	}
 
 	if v.Hex() == "000000000000000000000000" {
