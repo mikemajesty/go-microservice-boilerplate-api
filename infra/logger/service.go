@@ -52,16 +52,30 @@ type MongoWriter struct {
 }
 
 type write struct {
-	Level   string `bson:"level"`
-	Msg     string `bson:"msg"`
-	Time    string `bson:"time"`
-	TraceId string `bson:"traceId"`
+	Level    string `bson:"level"`
+	Msg      string `bson:"msg"`
+	Time     string `bson:"time"`
+	TraceId  string `bson:"traceId"`
+	HostName string `bson:"hostName"`
+	AppName  string `bson:"appName"`
+}
+
+func getHostName() string {
+	hostname, err := os.Hostname()
+	if err != nil {
+		return "unknown"
+	}
+	return hostname
 }
 
 func (mw *MongoWriter) Write(p []byte) (n int, err error) {
 	c := mw.Client.Database("go-microservice-boilerplate-api").Collection("logs")
 
-	data := write{}
+	data := write{
+		HostName: getHostName(),
+		AppName:  "go-microservice-boilerplate-api",
+	}
+
 	json.Unmarshal(p, &data)
 
 	_, err = c.InsertOne(context.TODO(), data)

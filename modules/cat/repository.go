@@ -30,17 +30,6 @@ func CreateCatRepository() core_cat_repository.CatRepositoryAdapter {
 	return &repository{}
 }
 
-func (r *repository) FindByName(input string) (*core_cat_entity.CatEntity, error) {
-	var entity = core_cat_entity.CatEntity{Name: input}
-	result := MongoDatabase.DB().Find(&entity, "name = ?", input)
-
-	if result.Error != nil {
-		return nil, result.Error
-	}
-
-	return &entity, nil
-}
-
 func (r *repository) Base() infra_repository.IRepository[*core_cat_entity.CatEntity, string] {
 	return CatRepository
 }
