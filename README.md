@@ -49,6 +49,91 @@
     - entity validation
 
 
+##### App Skeleton
+
+```
+.
+├── core
+│   ├── cat
+│   │   ├── entity
+│   │   │   └── cat.go
+│   │   ├── repository
+│   │   │   └── cat.go
+│   │   └── use-case
+│   │       ├── cat-create.go
+│   │       ├── cat-delete.go
+│   │       ├── cat-get-by-id.go
+│   │       ├── cat-list.go
+│   │       └── cat-update.go
+│   └── dog
+│       ├── entity
+│       │   └── dog.go
+│       ├── repository
+│       │   └── dog.go
+│       └── use-case
+│           ├── dog-create.go
+│           ├── dog-delete.go
+│           ├── dog-get-by-id.go
+│           ├── dog-list.go
+│           └── dog-update.go
+├── docker-compose.yml
+├── go.mod
+├── go.sum
+├── infra
+│   ├── cache
+│   │   ├── adapter.go
+│   │   ├── memory
+│   │   │   └── service.go
+│   │   └── redis
+│   │       └── service.go
+│   ├── database
+│   │   ├── adapter.go
+│   │   ├── mongo
+│   │   │   └── service.go
+│   │   └── postgres
+│   │       ├── migrations
+│   │       │   └── create-cat-table.go
+│   │       └── service.go
+│   ├── logger
+│   │   ├── adapter.go
+│   │   └── service.go
+│   ├── repository
+│   │   ├── adapter.go
+│   │   ├── mongo
+│   │   │   └── repository.go
+│   │   └── postgres
+│   │       └── repository.go
+│   └── secret
+│       ├── adapter.go
+│       └── service.go
+├── main.go
+├── modules
+│   ├── cat
+│   │   ├── adapter.go
+│   │   ├── controller.go
+│   │   ├── repository.go
+│   │   ├── routes.go
+│   │   └── validator.go
+│   └── dog
+│       ├── adapter.go
+│       ├── controller.go
+│       ├── repository.go
+│       ├── routes.go
+│       └── validator.go
+├── observables
+│   └── log-middlaware.go
+├── README.md
+├── textinho
+└── utils
+    ├── context.go
+    ├── entity.go
+    ├── exception.go
+    ├── pagination.go
+    ├── route.go
+    ├── type.go
+    └── validator.go
+```
+
 ---
 
 The following is a list of all the people that have contributed Nestjs monorepo boilerplate. Thanks for your contributions!
