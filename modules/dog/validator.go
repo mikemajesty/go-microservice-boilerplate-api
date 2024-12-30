@@ -17,8 +17,8 @@ type GetByIDAdatper struct{}
 type DeleteAdatper struct{}
 type CreateAdatper struct{}
 
-func (c *ListAdatper) DogListExecute() ([]core_dog_entity.DogEntity, *utils.AppException) {
-	return core_dog_usecase.DogListUsecase(dogRepository)()
+func (c *ListAdatper) DogListExecute(input utils.PaginationType) ([]core_dog_entity.DogEntity, *utils.AppException) {
+	return core_dog_usecase.DogListUsecase(dogRepository)(input)
 }
 
 func (c *UpdateAdatper) Validate(input *core_dog_entity.DogEntity) utils.Nullable[string] {

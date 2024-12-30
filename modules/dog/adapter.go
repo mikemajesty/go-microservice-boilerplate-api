@@ -38,7 +38,7 @@ func DogGetByID() DogGetByIDAdapter {
 }
 
 type DogListAdapter interface {
-	DogListExecute() ([]core_dog_entity.DogEntity, *utils.AppException)
+	DogListExecute(input utils.PaginationType) ([]core_dog_entity.DogEntity, *utils.AppException)
 }
 
 func DogList() DogListAdapter {

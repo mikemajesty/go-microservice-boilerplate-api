@@ -80,8 +80,8 @@ func (d *GetByIDAdatper) CatGetByIDExecute(input string) (*core_cat.CatEntity, *
 	return core_usecase_cat.CatGetByIDUsecase(catRepository)(input)
 }
 
-func (d *ListAdatper) CatListExecute() ([]core_cat.CatEntity, *utils.AppException) {
-	return core_usecase_cat.CatListUsecase(catRepository)()
+func (d *ListAdatper) CatListExecute(input utils.PaginationType) ([]core_cat.CatEntity, *utils.AppException) {
+	return core_usecase_cat.CatListUsecase(catRepository)(input)
 }
 
 func (d *UpdateAdatper) CatUpdateExecute(input *core_cat.CatEntity) (*core_cat.CatEntity, *utils.AppException) {

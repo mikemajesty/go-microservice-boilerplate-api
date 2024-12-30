@@ -3,6 +3,7 @@ package modules_dog
 import (
 	core_dog_entity "go-microservice-boilerplate-api/core/dog/entity"
 	infra "go-microservice-boilerplate-api/infra/logger"
+	"go-microservice-boilerplate-api/utils"
 
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -54,7 +55,7 @@ func GetDog(controller *gin.Context) {
 }
 
 func ListDog(controller *gin.Context) {
-	result, err := DogList().DogListExecute()
+	result, err := DogList().DogListExecute(utils.Pagination(controller))
 
 	if err != nil {
 		LoggerService.Error(err.GetMessage(), infra.LogAttrInput{"status": err.GetStatus()})

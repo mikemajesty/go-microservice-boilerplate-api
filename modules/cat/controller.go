@@ -3,6 +3,7 @@ package modules_cat
 import (
 	core_cat_entity "go-microservice-boilerplate-api/core/cat/entity"
 	infra "go-microservice-boilerplate-api/infra/logger"
+	"go-microservice-boilerplate-api/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -72,7 +73,8 @@ func UpdateCat(controller *gin.Context) {
 }
 
 func ListCat(controller *gin.Context) {
-	result, err := CatList().CatListExecute()
+
+	result, err := CatList().CatListExecute(utils.Pagination(controller))
 
 	if err != nil {
 		LoggerService.Error(err.GetMessage(), infra.LogAttrInput{"status": err.GetStatus()})

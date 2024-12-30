@@ -6,9 +6,9 @@ import (
 	"go-microservice-boilerplate-api/utils"
 )
 
-func DogListUsecase(repository core_dog_repository.DogRepositoryAdapter) func() ([]core_dog.DogEntity, *utils.AppException) {
-	return func() ([]core_dog.DogEntity, *utils.AppException) {
-		entityList, err := repository.Base().List("dogs")
+func DogListUsecase(repository core_dog_repository.DogRepositoryAdapter) func(input utils.PaginationType) ([]core_dog.DogEntity, *utils.AppException) {
+	return func(input utils.PaginationType) ([]core_dog.DogEntity, *utils.AppException) {
+		entityList, err := repository.Paginate(utils.ListInput{Pagination: input})
 
 		var dogEntities []core_dog.DogEntity
 
@@ -16,9 +16,8 @@ func DogListUsecase(repository core_dog_repository.DogRepositoryAdapter) func() 
 			return dogEntities, err
 		}
 
-		for _, dog := range entityList {
-			dogEntities = append(dogEntities, *dog)
-		}
+		dogEntities = append(dogEntities, entityList...)
+
 		return dogEntities, nil
 	}
 }
