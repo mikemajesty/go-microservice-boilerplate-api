@@ -17,7 +17,7 @@ type GetByIDAdatper struct{}
 type DeleteAdatper struct{}
 type CreateAdatper struct{}
 
-func (c *ListAdatper) DogListExecute(input utils.PaginationType) ([]core_dog_entity.DogEntity, *utils.AppException) {
+func (c *ListAdatper) DogListExecute(input utils.MongoListInput) ([]core_dog_entity.DogEntity, *utils.AppException) {
 	return core_dog_usecase.DogListUsecase(dogRepository)(input)
 }
 

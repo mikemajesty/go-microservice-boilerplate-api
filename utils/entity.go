@@ -14,7 +14,7 @@ type EntityAdapter interface {
 }
 
 type EntityIDAdapter interface {
-	primitive.ObjectID | uint | string
+	primitive.ObjectID | uint | ~string
 }
 
 type Entity[T EntityIDAdapter] struct {

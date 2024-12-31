@@ -8,5 +8,5 @@ import (
 
 type CatRepositoryAdapter interface {
 	Base() infra_repository.IRepository[*core_cat_entity.CatEntity, string]
-	Paginate(input utils.ListInput) ([]core_cat_entity.CatEntity, *utils.AppException)
+	Paginate(input utils.PostgresListInput) ([]core_cat_entity.CatEntity, *utils.AppException)
 }

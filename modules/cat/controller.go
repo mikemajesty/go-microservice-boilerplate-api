@@ -73,8 +73,18 @@ func UpdateCat(controller *gin.Context) {
 }
 
 func ListCat(controller *gin.Context) {
+	sort, err := utils.PostgresSort(controller)
 
-	result, err := CatList().CatListExecute(utils.Pagination(controller))
+	if err != nil {
+		LoggerService.Error(err.GetMessage(), infra.LogAttrInput{"status": err.GetStatus()})
+		trace, _ := controller.Get("traceId")
+		controller.JSON(err.GetStatus(), err.Response(err.GetStatus(), trace.(string)))
+		return
+	}
+
+	pagination := utils.Pagination(controller)
+
+	result, err := CatList().CatListExecute(utils.PostgresListInput{Sort: sort.(string), Pagination: pagination})
 
 	if err != nil {
 		LoggerService.Error(err.GetMessage(), infra.LogAttrInput{"status": err.GetStatus()})

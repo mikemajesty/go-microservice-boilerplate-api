@@ -10,5 +10,5 @@ import (
 
 type DogRepositoryAdapter interface {
 	Base() infra_repository.IRepository[*core_dog_entity.DogEntity, primitive.ObjectID]
-	Paginate(input utils.ListInput) ([]core_dog_entity.DogEntity, *utils.AppException)
+	Paginate(input utils.MongoListInput) ([]core_dog_entity.DogEntity, *utils.AppException)
 }

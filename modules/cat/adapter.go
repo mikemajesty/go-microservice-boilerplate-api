@@ -49,7 +49,7 @@ func CatUpdate() CatUpdateAdapter {
 }
 
 type CatListAdapter interface {
-	CatListExecute(input utils.PaginationType) ([]core_cat_entity.CatEntity, *utils.AppException)
+	CatListExecute(input utils.PostgresListInput) ([]core_cat_entity.CatEntity, *utils.AppException)
 }
 
 func CatList() CatListAdapter {

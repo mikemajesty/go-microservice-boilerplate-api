@@ -55,7 +55,18 @@ func GetDog(controller *gin.Context) {
 }
 
 func ListDog(controller *gin.Context) {
-	result, err := DogList().DogListExecute(utils.Pagination(controller))
+	sort, err := utils.MongoSort(controller)
+
+	if err != nil {
+		LoggerService.Error(err.GetMessage(), infra.LogAttrInput{"status": err.GetStatus()})
+		trace, _ := controller.Get("traceId")
+		controller.JSON(err.GetStatus(), err.Response(err.GetStatus(), trace.(string)))
+		return
+	}
+
+	pagination := utils.Pagination(controller)
+
+	result, err := DogList().DogListExecute(utils.MongoListInput{Sort: sort, Pagination: pagination})
 
 	if err != nil {
 		LoggerService.Error(err.GetMessage(), infra.LogAttrInput{"status": err.GetStatus()})

@@ -22,13 +22,14 @@ var PostgresService = infra_database.DatabaseAdapter[*mongo.Client](infra_databa
 
 type repository struct{}
 
-func (r *repository) Paginate(input utils.ListInput) ([]core_dog_entity.DogEntity, *utils.AppException) {
+func (r *repository) Paginate(input utils.MongoListInput) ([]core_dog_entity.DogEntity, *utils.AppException) {
 	skip := int64(input.Pagination.Page-1) * int64(input.Pagination.Limit)
 	limit := int64(input.Pagination.Limit)
+
 	fOpt := options.FindOptions{Limit: &limit, Skip: &skip}
 
 	_context := context.Background()
-	cursor, err := PostgresService.DB().Database("go-microservice-boilerplate-api").Collection("dogs").Find(_context, bson.M{}, &fOpt)
+	cursor, err := PostgresService.DB().Database("go-microservice-boilerplate-api").Collection("dogs").Find(_context, bson.M{}, fOpt.SetSort(CreateMongoSort(input.Sort)))
 
 	var entities []core_dog_entity.DogEntity
 
@@ -48,6 +49,15 @@ func (r *repository) Paginate(input utils.ListInput) ([]core_dog_entity.DogEntit
 		entities = append(entities, entity)
 	}
 	return entities, nil
+}
+
+func CreateMongoSort(sort []utils.MongoSortType) bson.D {
+	var sortFields bson.D
+	for _, s := range sort {
+		sortFields = append(sortFields, bson.E{Key: s.Field, Value: s.Order})
+	}
+
+	return sortFields
 }
 
 func CreateDogRepository() core_dog_repository.DogRepositoryAdapter {

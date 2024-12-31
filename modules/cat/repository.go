@@ -14,11 +14,12 @@ var MongoDatabase = infra_database_postgres.CreateConnectPostgres()
 
 type repository struct{}
 
-func (r *repository) Paginate(input utils.ListInput) ([]core_cat_entity.CatEntity, *utils.AppException) {
+func (r *repository) Paginate(input utils.PostgresListInput) ([]core_cat_entity.CatEntity, *utils.AppException) {
 	skip := int(input.Pagination.Page-1) * input.Pagination.Limit
 	limit := input.Pagination.Limit
 	var cats []core_cat_entity.CatEntity
-	result := MongoDatabase.DB().Limit(limit).Offset(skip).Find(&cats)
+
+	result := MongoDatabase.DB().Limit(limit).Offset(skip).Order(input.Sort).Find(&cats)
 
 	if result.Error != nil {
 		return nil, utils.ApiInternalServerException(result.Error.Error())

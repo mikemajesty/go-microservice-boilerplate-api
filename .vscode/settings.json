@@ -1,5 +1,6 @@
 {
   "go.delveConfig":{
-    "debugAdapter":"legacy"
+    "debugAdapter":"legacy",
+    "showGlobalVariables": true
   }
 }
