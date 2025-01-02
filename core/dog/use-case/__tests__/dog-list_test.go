@@ -11,7 +11,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// Test_When_Dog_Paginate_Successfully_Should_Expect_List
 func Test_When_Dog_Paginate_Error_Should_Expect_Error(t *testing.T) {
 	SetUp(t)
 	repo := Mock[repository.DogRepositoryAdapter]()
