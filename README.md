@@ -64,7 +64,13 @@
 │   │       ├── cat-delete.go
 │   │       ├── cat-get-by-id.go
 │   │       ├── cat-list.go
-│   │       └── cat-update.go
+│   │       ├── cat-update.go
+│   │       └── __test__
+│   │           ├── cat-create_test.go
+│   │           ├── cat-delete_test.go
+│   │           ├── cat-get-by-id_test.go
+│   │           ├── cat-list_test.go
+│   │           └── cat-update_test.go
 │   └── dog
 │       ├── entity
 │       │   └── dog.go
@@ -75,7 +81,13 @@
 │           ├── dog-delete.go
 │           ├── dog-get-by-id.go
 │           ├── dog-list.go
-│           └── dog-update.go
+│           ├── dog-update.go
+│           └── __tests__
+│               ├── dog-create_test.go
+│               ├── dog-delete_test.go
+│               ├── dog-get-by-id_test.go
+│               ├── dog-list_test.go
+│               └── dog-update_test.go
 ├── docker-compose.yml
 ├── go.mod
 ├── go.sum
@@ -130,6 +142,8 @@
     ├── exception.go
     ├── pagination.go
     ├── route.go
+    ├── search.go
+    ├── sort.go
     ├── type.go
     └── validator.go
 ```
