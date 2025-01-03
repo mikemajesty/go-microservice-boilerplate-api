@@ -14,6 +14,13 @@
   CompileDaemon -command="./go-microservice-boilerplate-api"
   ```
 
+### Test
+
+- run
+  ```
+  $ go test ./core/dog/use-case/__tests__/ ./core/cat/use-case/__test__/
+  ```
+
 #### CRUD features
 
 - List
@@ -47,6 +54,18 @@
     - Not allow creating duplicates
   - postgres
     - entity validation
+
+### Architecture diagram
+
+## ![alt text](OnionGraph.jpg)
+
+[Architecture documentation](https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/)
+
+### User diagram
+
+![alt text](diagram.png)
+
+### Microservice architecture.
 
 
 ##### App Skeleton
