@@ -82,9 +82,18 @@ func ListCat(controller *gin.Context) {
 		return
 	}
 
+	search, errSearch := utils.CreateSearch(controller)
+
+	if errSearch != nil {
+		LoggerService.Error(errSearch.GetMessage(), infra.LogAttrInput{"status": errSearch.GetStatus()})
+		trace, _ := controller.Get("traceId")
+		controller.JSON(errSearch.GetStatus(), errSearch.Response(errSearch.GetStatus(), trace.(string)))
+		return
+	}
+
 	pagination := utils.Pagination(controller)
 
-	result, err := CatList().CatListExecute(utils.PostgresListInput{Sort: sort.(string), Pagination: pagination})
+	result, err := CatList().CatListExecute(utils.PostgresListInput{Sort: sort.(string), Pagination: pagination, Search: search})
 
 	if err != nil {
 		LoggerService.Error(err.GetMessage(), infra.LogAttrInput{"status": err.GetStatus()})

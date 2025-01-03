@@ -11,9 +11,11 @@ type PaginationType struct {
 type MongoListInput struct {
 	Pagination PaginationType  `json:"pagination"`
 	Sort       []MongoSortType `json:"sort"`
+	Search     SearchType      `json:"search"`
 }
 
 type PostgresListInput struct {
 	Pagination PaginationType `json:"pagination"`
 	Sort       string         `json:"sort"`
+	Search     SearchType     `json:"search"`
 }

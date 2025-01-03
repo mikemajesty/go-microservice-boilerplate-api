@@ -19,7 +19,7 @@ func (r *repository) Paginate(input utils.PostgresListInput) ([]core_cat_entity.
 	limit := input.Pagination.Limit
 	var cats []core_cat_entity.CatEntity
 
-	result := MongoDatabase.DB().Limit(limit).Offset(skip).Order(input.Sort).Find(&cats)
+	result := MongoDatabase.DB().Limit(limit).Offset(skip).Order(input.Sort).Find(&cats, GetFilter(input))
 
 	if result.Error != nil {
 		return nil, utils.ApiInternalServerException(result.Error.Error())
@@ -33,4 +33,11 @@ func CreateCatRepository() core_cat_repository.CatRepositoryAdapter {
 
 func (r *repository) Base() infra_repository.IRepository[*core_cat_entity.CatEntity, string] {
 	return CatRepository
+}
+
+func GetFilter(input utils.PostgresListInput) utils.Nullable[map[string]interface{}] {
+	if input.Search.Field == "" {
+		return interface{}(nil)
+	}
+	return map[string]interface{}{input.Search.Field: input.Search.Value}
 }

@@ -8,7 +8,7 @@ import (
 
 func CatListUsecase(repository core_cat_repository.CatRepositoryAdapter) func(input utils.PostgresListInput) ([]core_cat.CatEntity, *utils.AppException) {
 	return func(input utils.PostgresListInput) ([]core_cat.CatEntity, *utils.AppException) {
-		entityList, err := repository.Paginate(utils.PostgresListInput{Pagination: input.Pagination, Sort: input.Sort})
+		entityList, err := repository.Paginate(utils.PostgresListInput{Pagination: input.Pagination, Sort: input.Sort, Search: input.Search})
 
 		var catEntities []core_cat.CatEntity
 

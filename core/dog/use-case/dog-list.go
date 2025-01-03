@@ -8,7 +8,7 @@ import (
 
 func DogListUsecase(repository core_dog_repository.DogRepositoryAdapter) func(input utils.MongoListInput) ([]core_dog.DogEntity, *utils.AppException) {
 	return func(input utils.MongoListInput) ([]core_dog.DogEntity, *utils.AppException) {
-		entityList, err := repository.Paginate(utils.MongoListInput{Pagination: input.Pagination, Sort: input.Sort})
+		entityList, err := repository.Paginate(utils.MongoListInput{Pagination: input.Pagination, Sort: input.Sort, Search: input.Search})
 
 		var dogEntities []core_dog.DogEntity
 

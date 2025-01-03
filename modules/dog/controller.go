@@ -57,6 +57,15 @@ func GetDog(controller *gin.Context) {
 func ListDog(controller *gin.Context) {
 	sort, err := utils.MongoSort(controller)
 
+	search, errSearch := utils.CreateSearch(controller)
+
+	if errSearch != nil {
+		LoggerService.Error(errSearch.GetMessage(), infra.LogAttrInput{"status": errSearch.GetStatus()})
+		trace, _ := controller.Get("traceId")
+		controller.JSON(errSearch.GetStatus(), errSearch.Response(errSearch.GetStatus(), trace.(string)))
+		return
+	}
+
 	if err != nil {
 		LoggerService.Error(err.GetMessage(), infra.LogAttrInput{"status": err.GetStatus()})
 		trace, _ := controller.Get("traceId")
@@ -66,7 +75,7 @@ func ListDog(controller *gin.Context) {
 
 	pagination := utils.Pagination(controller)
 
-	result, err := DogList().DogListExecute(utils.MongoListInput{Sort: sort, Pagination: pagination})
+	result, err := DogList().DogListExecute(utils.MongoListInput{Sort: sort, Pagination: pagination, Search: search})
 
 	if err != nil {
 		LoggerService.Error(err.GetMessage(), infra.LogAttrInput{"status": err.GetStatus()})

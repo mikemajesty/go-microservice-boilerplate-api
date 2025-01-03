@@ -29,7 +29,8 @@ func (r *repository) Paginate(input utils.MongoListInput) ([]core_dog_entity.Dog
 	fOpt := options.FindOptions{Limit: &limit, Skip: &skip}
 
 	_context := context.Background()
-	cursor, err := PostgresService.DB().Database("go-microservice-boilerplate-api").Collection("dogs").Find(_context, bson.M{}, fOpt.SetSort(CreateMongoSort(input.Sort)))
+
+	cursor, err := PostgresService.DB().Database("go-microservice-boilerplate-api").Collection("dogs").Find(_context, GetFilter(input), fOpt.SetSort(CreateMongoSort(input.Sort)))
 
 	var entities []core_dog_entity.DogEntity
 
@@ -66,4 +67,13 @@ func CreateDogRepository() core_dog_repository.DogRepositoryAdapter {
 
 func (r *repository) Base() infra_repository.IRepository[*core_dog_entity.DogEntity, primitive.ObjectID] {
 	return DogRepository
+}
+
+func GetFilter(input utils.MongoListInput) bson.D {
+	if input.Search.Field == "" {
+		return bson.D{}
+
+	}
+	filter := bson.D{{Key: input.Search.Field, Value: input.Search.Value}}
+	return filter
 }
