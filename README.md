@@ -3,6 +3,8 @@
 
 ##### In this Golang boilerplate I used the main concepts of DDD, Clean Architecture, Ports and Adapters (Hexagonal Architecture).
 
+### Run
+
 - infra
   ```
    docker-compose up --build
